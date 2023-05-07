@@ -1,4 +1,7 @@
-using EFCollection.DAL.Data;
+using EFCollections.DAL.Data;
+using EFCollections.DAL.Interfaces.Repositories;
+using EFCollections.DAL.Data.Repositories;
+using EFCollections.DAL.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,10 @@ builder.Services.AddDbContext<CollectionContext>(options =>
 {
     string connectionString = builder.Configuration.GetConnectionString("MSSQLConnection");
 });
+
+builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

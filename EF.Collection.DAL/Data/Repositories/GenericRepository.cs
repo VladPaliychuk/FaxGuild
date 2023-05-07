@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using EFCollections.DAL.Exceptions;
+using EFCollections.DAL.Interfaces.Repositories;
 
 namespace EFCollections.DAL.Data.Repositories
 {

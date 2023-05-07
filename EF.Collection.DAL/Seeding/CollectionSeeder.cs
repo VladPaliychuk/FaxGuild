@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using EFCollection.DAL.Entities;
+using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces;
 
 namespace EFCollections.DAL.Seeding
 {
     public class CollectionSeeder : ISeeder<Collection>
     {
-        private static readonly List<Collection> projects = new()
+        private static readonly List<Collection> collections = new()
         {
             new Collection
             {
@@ -16,6 +16,6 @@ namespace EFCollections.DAL.Seeding
             }
         };
 
-        public void Seed(EntityTypeBuilder<Collection> builder) => builder.HasData(projects);
+        public void Seed(EntityTypeBuilder<Collection> builder) => builder.HasData(collections);
     }
 }

@@ -1,23 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using EFCollection.DAL.Entities;
-using EFCollections.DAL.Configurations;
+using EFCollections.DAL.Entities;
+using EFCollections.DAL.Configuration;
 
 namespace EFCollections.DAL.Data
 { 
     public class CollectionContext : DbContext 
     {
         public DbSet<Collection> Collection { get; set; }
+        public DbSet<CollectionPost> CollectionPost { get; set; }
+        public DbSet<Saved> Saved { get; set; }
+        public DbSet<Storage> Storage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new CollectionConfiguration());
+            modelBuilder.ApplyConfiguration(new CollectionPostConfiguration());
+            modelBuilder.ApplyConfiguration(new SavedConfiguration());
+            modelBuilder.ApplyConfiguration(new StorageConfiguration());
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
