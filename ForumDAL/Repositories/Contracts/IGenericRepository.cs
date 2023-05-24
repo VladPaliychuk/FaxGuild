@@ -8,6 +8,9 @@ namespace ForumDAL.Repositories.Contracts
 {
     public interface IGenericRepository<T>
     {
+        Task AddTagToPost(int postId, string tagName);
+        Task<int> GetTagIdByName(string tagName);
+
         Task<IEnumerable<T>> GetAllAsync();
         Task DeleteAsync(int id);
         Task<T> GetAsync(int id);

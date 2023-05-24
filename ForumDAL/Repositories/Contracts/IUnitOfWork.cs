@@ -4,6 +4,7 @@
     {
         IPostRepository _postRepository { get; }
         ITagRepository _tagRepository { get; }
+        IPostTagRepository _postTagRepository { get; }
         void Commit();
         void Dispose();
     }

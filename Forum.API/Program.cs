@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -24,30 +23,10 @@ builder.Services.AddScoped<IDbTransaction>(s =>
 // Dependendency Injection for Repositories/UOW from ADO.NET DAL
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IPostTagRepository, PostTagRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
-
-
-//////////////////////////////////////////
-// MIDDLEWARE - йнмбе╙п напнайх гюохрс
-// Configure the HTTP request pipeline.
-//////////////////////////////////////////
-
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -6,7 +6,7 @@ namespace ForumDAL.Repositories
     {
         public static SqlConnection CreateConnection()
         {
-            return new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=FaxGuild;Integrated Security=True");
+            return new SqlConnection(@"Server=.\\SQLEXPRESS;Initial Catalog=FaxGuild;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=True;");
         }
     }
 }

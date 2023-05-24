@@ -8,9 +8,9 @@ namespace Forum.API.Controllers
     [ApiController]
     public class TagController : ControllerBase
     {
-        private readonly ILogger<PostController> _logger;
+        private readonly ILogger<TagController> _logger;
         private IUnitOfWork _ADOuow;
-        public TagController(ILogger<PostController> logger,
+        public TagController(ILogger<TagController> logger,
             IUnitOfWork ado_unitofwork)
         {
             _logger = logger;
@@ -19,13 +19,13 @@ namespace Forum.API.Controllers
 
         //GET: api/events
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Post>>> GetAllPostsAsync()
+        public async Task<ActionResult<IEnumerable<Tag>>> GetAllPostsAsync()
         {
             try
             {
-                var results = await _ADOuow._postRepository.GetAllAsync();
+                var results = await _ADOuow._tagRepository.GetAllAsync();
                 _ADOuow.Commit();
-                _logger.LogInformation($"Отримали всі пости з бази даних!");
+                _logger.LogInformation($"Отримали всі теги з бази даних!");
                 return Ok(results);
             }
             catch (Exception ex)
@@ -37,11 +37,11 @@ namespace Forum.API.Controllers
 
         //GET: api/events/Id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetByIdAsync(int id)
+        public async Task<ActionResult<Tag>> GetByIdAsync(int id)
         {
             try
             {
-                var result = await _ADOuow._postRepository.GetAsync(id);
+                var result = await _ADOuow._tagRepository.GetAsync(id);
                 _ADOuow.Commit();
                 if (result == null)
                 {
@@ -64,7 +64,7 @@ namespace Forum.API.Controllers
 
         //POST: api/events
         [HttpPost]
-        public async Task<ActionResult> PostEventAsync([FromBody] Post evnt)
+        public async Task<ActionResult> PostEventAsync([FromBody] Tag evnt)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Forum.API.Controllers
                     _logger.LogInformation($"Ми отримали некоректний json зі сторони клієнта");
                     return BadRequest("Обєкт івенту є некоректним");
                 }
-                var created_id = await _ADOuow._postRepository.AddAsync(evnt);
+                var created_id = await _ADOuow._tagRepository.AddAsync(evnt);
                 _ADOuow.Commit();
                 return StatusCode(StatusCodes.Status201Created);
             }
@@ -106,7 +106,7 @@ namespace Forum.API.Controllers
                     return BadRequest("Обєкт івенту є некоректним");
                 }
 
-                var event_entity = await _ADOuow._postRepository.GetAsync(id);
+                var event_entity = await _ADOuow._tagRepository.GetAsync(id);
                 if (event_entity == null)
                 {
                     _logger.LogInformation($"Івент із Id: {id}, не був знайдейний у базі даних");
@@ -130,14 +130,14 @@ namespace Forum.API.Controllers
         {
             try
             {
-                var event_entity = await _ADOuow._postRepository.GetAsync(id);
+                var event_entity = await _ADOuow._tagRepository.GetAsync(id);
                 if (event_entity == null)
                 {
                     _logger.LogInformation($"Івент із Id: {id}, не був знайдейний у базі даних");
                     return NotFound();
                 }
 
-                await _ADOuow._postRepository.DeleteAsync(id);
+                await _ADOuow._tagRepository.DeleteAsync(id);
                 _ADOuow.Commit();
                 return NoContent();
             }
@@ -148,5 +148,33 @@ namespace Forum.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Додає зв'язок мені ту мені між таблицями Post і Tag у таблицю PostTag
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="tagName">example: Cyril7</param>
+        /// <returns></returns>
+        [HttpPost("{postId}, {tagName}")]
+        public async Task<ActionResult> AddTagToPostAsync(int postId, string tagName)
+        {
+            try
+            {
+                var event_entity = await _ADOuow._tagRepository.GetAsync(postId);
+                if (event_entity == null)
+                {
+                    _logger.LogInformation($"Івент із Id: {postId}, не був знайдейний у базі даних");
+                    return NotFound();
+                }
+
+                await _ADOuow._tagRepository.AddTagToPost(postId, tagName);
+                _ADOuow.Commit();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі AddTagToPostAsync() - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
+            }
+        }
     }
 }

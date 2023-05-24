@@ -7,17 +7,19 @@ namespace ForumDAL.Repositories
     {
         public IPostRepository _postRepository { get; }
         public ITagRepository _tagRepository { get; }
-        //public ITagRepository _tagRepository { get; }
+        public IPostTagRepository _postTagRepository { get; }
 
         readonly IDbTransaction _dbTransaction;
 
         public UnitOfWork(
             IPostRepository postRepository,
             ITagRepository tagRepository,
+            IPostTagRepository postTagTagRepository,
             IDbTransaction dbTransaction)
         {
             _postRepository= postRepository;
             _tagRepository= tagRepository;
+            _postTagRepository= postTagTagRepository;
             _dbTransaction = dbTransaction;
         }
 

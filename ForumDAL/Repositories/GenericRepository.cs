@@ -22,6 +22,23 @@ namespace ForumDAL.Repositories
             _dbTransaction = dbTransaction;
             _tableName = tableName;
         }
+
+        public async Task AddTagToPost(int postId, string tagName)
+        {
+            int tagId = await GetTagIdByName(tagName);
+            await _sqlConnection.ExecuteAsync($"INSERT INTO Forum.PostTag (TagId, PostId) VALUES (@TagId, @PostId)",
+                param: new { TagId = tagId, PostId = postId },
+                transaction: _dbTransaction);
+        }
+        public async Task<int> GetTagIdByName(string tagName)
+        {
+            var tag = await _sqlConnection.QueryFirstOrDefaultAsync(
+            "SELECT Id FROM Forum.Tag WHERE Name = @TagName",
+            new { TagName = tagName },
+            transaction: _dbTransaction
+            );
+            return tag?.Id ?? throw new Exception($"Tag '{tagName}' not found.");
+        }
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _sqlConnection.QueryAsync<T>($"SELECT * FROM {_tableName}",
@@ -40,8 +57,7 @@ namespace ForumDAL.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            await _sqlConnection.ExecuteAsync($"DELETE TagID, PostID FROM PostTag WHERE {_tableName}.ID=@Id " +
-                $"DELETE FROM {_tableName} WHERE Id=@Id",
+            await _sqlConnection.ExecuteAsync($"DELETE FROM {_tableName} WHERE ID=@Id",
                 param: new { Id = id },
                 transaction: _dbTransaction);
         }

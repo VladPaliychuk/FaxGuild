@@ -59,7 +59,7 @@ namespace Forum.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetAllEventsAsync() - {ex.Message}");
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetAllByIdAsync() - {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
             }
         }
@@ -145,10 +145,40 @@ namespace Forum.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetAllEventsAsync() - {ex.Message}");
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі DeleteByIdAsync() - {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
             }
         }
 
+        /// <summary>
+        /// Додає зв'язок мені ту мені між таблицями Post і Tag у таблицю PostTag
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="tagName">example: Cyril7</param>
+        /// <returns></returns>
+        [HttpPost("{postId}, {tagName}")]
+        public async Task<ActionResult> AddTagToPostAsync(int postId, string tagName)
+        {
+            try
+            {
+                var event_entity = await _ADOuow._postRepository.GetAsync(postId);
+                if (event_entity == null)
+                {
+                    _logger.LogInformation($"Івент із Id: {postId}, не був знайдейний у базі даних");
+                    return NotFound();
+                }
+
+                await _ADOuow._postRepository.AddTagToPost(postId, tagName);
+                _ADOuow.Commit();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі AddTagToPostAsync() - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
+            }
+        }
+
+        
     }
 }
