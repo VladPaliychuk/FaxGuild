@@ -19,10 +19,10 @@ namespace ForumDAL.Repositories
 
         public async Task<IEnumerable<Tag>>GetAllTagsByPostIdAsync(int id)
         {
-            return await _sqlConnection.QueryAsync<Tag>($"SELECT Tag.Name " +
-                $"FROM Post AS P " +
-                $"JOIN PostTag AS PT ON P.Id = PT.PostId " +
-                $"JOIN Tag AS T ON PT.TagId = T.Id " +
+            return await _sqlConnection.QueryAsync<Tag>($"SELECT * " +
+                $"FROM Forum.Post AS P " +
+                $"JOIN Forum.PostTag AS PT ON P.Id = PT.PostId " +
+                $"JOIN Forum.Tag AS T ON PT.TagId = T.Id " +
                 $"WHERE P.Id = @Id",
                 param: new { Id = id },
                 transaction: _dbTransaction);

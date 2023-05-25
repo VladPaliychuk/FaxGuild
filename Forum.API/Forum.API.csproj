@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Forum.BLL\Forum.BLL.csproj" />
     <ProjectReference Include="..\ForumDAL\ForumDAL.csproj" />
   </ItemGroup>
 
