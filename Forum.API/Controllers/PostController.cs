@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ForumDAL.Entities;
 //using MyEventsEntityFrameworkDb.EFRepositories.Contracts;
 using ForumDAL.Repositories.Contracts;
+using Forum.BLL.Interfaces;
+using Forum.BLL.DTOs;
 
 namespace Forum.API.Controllers
 {
@@ -11,14 +13,76 @@ namespace Forum.API.Controllers
     public class PostController : ControllerBase
     {
         private readonly ILogger<PostController> _logger;
+        private readonly IPostService _postService;
         private IUnitOfWork _ADOuow;
         public PostController(ILogger<PostController> logger,
-            IUnitOfWork ado_unitofwork)
+            IUnitOfWork ado_unitofwork, IPostService postService)
         {
             _logger = logger;
             _ADOuow = ado_unitofwork;
+            _postService = postService;
         }
 
+        [HttpGet("BLL-GetById")]
+        public async Task<ActionResult<PostDto>> GetPostById(int id)
+        {
+            var posts = await _postService.GetPostById(id);
+            
+            try
+            {
+                _ADOuow.Commit();
+                if (posts == null)
+                {
+                    _logger.LogInformation($"Івент із Id: {id}, не був знайдейний у базі даних");
+                    return NotFound();
+                }
+                else
+                {
+                    _logger.LogInformation($"Отримали івент з бази даних!");
+                    return Ok(posts);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetAllByIdAsync() - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
+            }
+        }
+
+        [HttpGet("BLL-GetAllPosts")]
+        public async Task<ActionResult<IEnumerable<PostDto>>> GetAllPosts()
+        {
+            try
+            {
+                var results = await _postService.GetAllPosts();
+                _ADOuow.Commit();
+                _logger.LogInformation($"Отримали всі пости з бази даних!");
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetAllPosts() - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
+            }
+        }
+
+        [HttpGet("GetAverageLikes")]
+        public async Task<ActionResult<int>> GetAverageLikesAsync()
+        {
+            try
+            {
+                var results = await _postService.GetAverageLikes();
+                _ADOuow.Commit();
+                _logger.LogInformation($"Отримали всі пости з бази даних!");
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetAllPostsAsync() - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
+            }
+        }
         //GET: api/events
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Post>>> GetAllPostsAsync()
@@ -156,7 +220,7 @@ namespace Forum.API.Controllers
         /// <param name="postId"></param>
         /// <param name="tagName">example: Cyril7</param>
         /// <returns></returns>
-        [HttpPost("{postId}, {tagName}")]
+        [HttpPost("AddPostToTag (adding id's to PostTag)")]
         public async Task<ActionResult> AddTagToPostAsync(int postId, string tagName)
         {
             try
@@ -179,6 +243,21 @@ namespace Forum.API.Controllers
             }
         }
 
-        
+        [HttpGet("GetAllTagsByPostId")]
+        public async Task<ActionResult<IEnumerable<Post>>> GetAllTagsByPostIdAsync(int postId)
+        {
+            try
+            {
+                var results = await _ADOuow._postRepository.GetAllTagsByPostIdAsync(postId);
+                _ADOuow.Commit();
+                _logger.LogInformation($"Отримали всі пости з бази даних!");
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetAllTagsByPostIdAsync() - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
+            }
+        }
     }
 }
