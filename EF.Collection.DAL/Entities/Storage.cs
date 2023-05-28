@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Entities
 {
-    [Keyless]
+    //[Keyless]
     public class Storage
     {
-        public int UserID { get; set; }
-        public int PostID { get; set; }
+        //public Guid Id { get; set; }
+        public int UserId { get; set; }
+        public int PostId { get; set; }
+
+        public User? User { get; set; }
+        public Post? Post { get; set; }
     }
 }

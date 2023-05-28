@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Interfaces.Repositories
 {
-    public interface ISavedRepository : IRepository<Saved>
+    public interface ISavedRepository : IGenericRepository<Saved>
     {
     }
 }

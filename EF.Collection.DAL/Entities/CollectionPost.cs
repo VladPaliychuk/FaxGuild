@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Entities
 {
-    [Keyless]
+    //[Keyless]
     public class CollectionPost
     {
-        public int CollectionID { get; set; }
-        public int PostID { get; set; }
+        public int CollectionId { get; set; }
+        public int PostId { get; set; }
+
+        public Collection? Collection { get; set; }
+        public Post? Post { get; set; }
     }
 }

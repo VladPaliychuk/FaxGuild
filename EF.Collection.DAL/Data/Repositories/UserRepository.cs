@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Data.Repositories
 {
-    public class StorageRepository : GenericRepository<Storage>, IStorageRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        public StorageRepository(CollectionContext collectionContext) : base(collectionContext) { }
-        public override Task<Storage> GetCompleteEntityAsync(int id)
+        public UserRepository(CollectionContext collectionContext) : base(collectionContext) { }
+
+        public override Task<User> GetCompleteEntityAsync(int id)
         {
             throw new NotImplementedException();
         }

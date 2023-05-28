@@ -1,12 +1,7 @@
-﻿using EFCollections.DAL.Seeding;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EFCollections.DAL.Entities;
+using EFCollections.DAL.Seeding;
 
 namespace EFCollections.DAL.Configuration
 {
@@ -14,13 +9,13 @@ namespace EFCollections.DAL.Configuration
     {
         public void Configure(EntityTypeBuilder<Storage> builder)
         {
-            builder.Property(storages => storages.UserID)
-                   .IsRequired();
+            builder.HasKey(cp => new { cp.UserId, cp.PostId });
 
-            builder.Property(storages => storages.PostID)
-                   .IsRequired();
+            builder.HasOne(cp => cp.Post).WithMany(p => p.Storages).HasForeignKey(p => p.PostId).OnDelete(DeleteBehavior.ClientCascade);
+            builder.HasOne(cp => cp.User).WithMany(c => c.Storages).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.ClientCascade);
 
-            new StorageSeeder().Seed(builder);
+            //builder.HasData(DataSeeder.Storages);
+            //new StorageSeeder().Seed(builder);
         }
     }
 }

@@ -8,7 +8,7 @@ using EFCollections.DAL.Entities;
 
 namespace EFCollections.DAL.Interfaces.Repositories
 {
-    public interface ICollectionRepository : IRepository<Collection>
-    {   
+    public interface ICollectionRepository : IGenericRepository<Collection>
+    {
     }
 }

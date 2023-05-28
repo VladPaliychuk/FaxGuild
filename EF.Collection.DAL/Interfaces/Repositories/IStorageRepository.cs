@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Interfaces.Repositories
 {
-    public interface IStorageRepository : IRepository<Storage>
+    public interface IStorageRepository : IGenericRepository<Storage>
     {
     }
 }

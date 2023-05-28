@@ -4,11 +4,11 @@ using MyEventsEntityFrameworkDb.EFRepositories;
 
 namespace EFCollections.DAL.Data.Repositories
 {
-    public class SavedRepository : GenericRepository<Saved>, ISavedRepository
+    public class PostRepository : GenericRepository<Post>, IPostRepository
     {
-        public SavedRepository(CollectionContext collectionContext) : base(collectionContext) { }
+        public PostRepository(CollectionContext collectionContext) : base(collectionContext) { }
 
-        public override Task<Saved> GetCompleteEntityAsync(int id)
+        public override Task<Post> GetCompleteEntityAsync(int id)
         {
             throw new NotImplementedException();
         }

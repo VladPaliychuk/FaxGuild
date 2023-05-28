@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Interfaces.Repositories
 {
-    public interface ICollectionPostRepository : IRepository<CollectionPost>
+    public interface ICollectionPostRepository : IGenericRepository<CollectionPost>
     {
     }
 }

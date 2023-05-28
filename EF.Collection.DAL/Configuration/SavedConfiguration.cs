@@ -9,13 +9,13 @@ namespace EFCollections.DAL.Configuration
     {
         public void Configure(EntityTypeBuilder<Saved> builder)
         {
-            builder.Property(saved => saved.UserID)
-                   .IsRequired();
+            builder.HasKey(cp => new { cp.PostId, cp.UserId });
 
-            builder.Property(saved => saved.PostID)
-                   .IsRequired();
+            builder.HasOne(cp => cp.Post).WithMany(p => p.Saveds).HasForeignKey(p => p.PostId).OnDelete(DeleteBehavior.ClientCascade);
+            builder.HasOne(cp => cp.User).WithMany(c => c.Saveds).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.ClientCascade);
 
-            new SavedSeeder().Seed(builder);
+            //builder.HasData(DataSeeder.Saveds);
+            //new SavedSeeder().Seed(builder);
         }
     }
 }

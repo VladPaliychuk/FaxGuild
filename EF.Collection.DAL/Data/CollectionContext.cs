@@ -6,14 +6,20 @@ namespace EFCollections.DAL.Data
 { 
     public class CollectionContext : DbContext 
     {
-        public DbSet<Collection> Collection { get; set; }
-        public DbSet<CollectionPost> CollectionPost { get; set; }
-        public DbSet<Saved> Saved { get; set; }
-        public DbSet<Storage> Storage { get; set; }
+        public CollectionContext(DbContextOptions<CollectionContext> options) : base(options) { }
+
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Post> Posts => Set<Post>();
+        public DbSet<Collection> Collections => Set<Collection>();
+        public DbSet<CollectionPost> CollectionPosts => Set<CollectionPost>();
+        public DbSet<Saved> Saveds => Set<Saved>();
+        public DbSet<Storage> Storages => Set<Storage>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new PostConfiguration());
             modelBuilder.ApplyConfiguration(new CollectionConfiguration());
             modelBuilder.ApplyConfiguration(new CollectionPostConfiguration());
             modelBuilder.ApplyConfiguration(new SavedConfiguration());
@@ -25,11 +31,6 @@ namespace EFCollections.DAL.Data
             {
                 optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Initial Catalog=FaxGuild2;Trusted_Connection=SSPI;Encrypt=false;TrustServerCertificate=True;");
             }
-        }
-
-        public CollectionContext(DbContextOptions<CollectionContext> options)
-            : base(options)
-        {
         }
     }
 }

@@ -1,25 +1,42 @@
 ﻿using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Seeding
 {
     public class StorageSeeder : ISeeder<Storage>
     {
-        private static readonly List<Storage> storages = new()
+        private static readonly List<Storage> s = new()
         {
             new Storage
             {
-                UserID = 1,
-                PostID = 1
+                UserId = 1,
+                PostId = 1
+            },
+            new Storage
+            {
+                UserId = 2,
+                PostId = 1
+            },
+            new Storage
+            {
+                UserId = 3,
+                PostId = 1
+            },
+            new Storage
+            {
+                UserId = 4,
+                PostId = 1
+            },
+            new Storage
+            {
+                UserId = 5,
+                PostId = 1
             }
         };
-
-        public void Seed(EntityTypeBuilder<Storage> builder) => builder.HasData(storages);
+        public void Seed(EntityTypeBuilder<Storage> builder)
+        {
+            builder.HasData(s);
+        }
     }
 }

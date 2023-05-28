@@ -1,45 +1,109 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using EFCollections.DAL.Data;
 using EFCollections.DAL.Exceptions;
 using EFCollections.DAL.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
+namespace MyEventsEntityFrameworkDb.EFRepositories;
 
-namespace EFCollections.DAL.Data.Repositories
+public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
 {
-    public abstract class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    // properties
+    protected readonly CollectionContext databaseContext;
+    protected readonly DbSet<TEntity> table;
+
+    // constructor
+    public GenericRepository(CollectionContext databaseContext)
     {
-        protected readonly CollectionContext databaseContext;
-
-        protected readonly DbSet<TEntity> table;
-
-        public virtual async Task<IEnumerable<TEntity>> GetAsync() => await table.ToListAsync();
-
-        public virtual async Task<TEntity> GetByIdAsync(int id)
-        {
-            return await table.FindAsync(id)
-                ?? throw new EntityNotFoundException(
-                    GetEntityNotFoundErrorMessage(id));
-        }
-        public abstract Task<TEntity> GetCompleteEntityAsync(int id);
-
-        public virtual async Task InsertAsync(TEntity entity) => await table.AddAsync(entity);
-
-        public virtual async Task UpdateAsync(TEntity entity) =>
-            await Task.Run(() => table.Update(entity));
-
-        public virtual async Task DeleteAsync(int id)
-        {
-            var entity = await GetByIdAsync(id);
-            await Task.Run(() => table.Remove(entity));
-        }
-
-        protected static string GetEntityNotFoundErrorMessage(int id) =>
-            $"{typeof(TEntity).Name} with id {id} not found.";
-
-        public GenericRepository(CollectionContext databaseContext)
-        {
-            this.databaseContext = databaseContext;
-            table = this.databaseContext.Set<TEntity>();
-        }
+        this.databaseContext = databaseContext;
+        table = this.databaseContext.Set<TEntity>();
     }
+
+
+    /// <summary>
+    /// GetByIdAsync
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>TEntity</returns>
+    /// <exception cref="EntityNotFoundException"></exception>
+    public async Task<TEntity> GetByIdAsync(int id)
+    {
+        return await table.FindAsync(id)
+        ?? throw new EntityNotFoundException($"{typeof(TEntity).Name} with id {id} not found.");
+    }
+
+
+    /// <summary>
+    /// GetAllAsync
+    /// </summary>
+    /// <returns>IEnumerable<TEntity></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    {
+        return await table.ToListAsync()
+        ?? throw new Exception($"Couldn't retrieve entities {typeof(TEntity).Name} ");
+    }
+
+
+    /// <summary>
+    /// AddAsync
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public virtual async Task AddAsync(TEntity entity)
+    {
+        if (entity == null)
+        {
+            throw new ArgumentNullException($"{nameof(TEntity)} entity must not be null");
+        }
+        await table.AddAsync(entity);
+    }
+
+
+    /// <summary>
+    /// UpdateAsync
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    public async Task UpdateAsync(TEntity entity)
+    {
+        if (entity == null)
+        {
+            throw new ArgumentNullException($"{nameof(TEntity)} entity must not be null");
+        }
+        await Task.Run(() => table.Update(entity));
+
+    }
+
+    /// <summary>
+    /// DeleteByIdAsync
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public async Task DeleteByIdAsync(int id)
+    {
+        var entity = await GetByIdAsync(id) ?? throw new EntityNotFoundException($"{typeof(TEntity).Name} with id {id} not found. Cann't delete.");
+        await Task.Run(() => table.Remove(entity));
+    }
+
+
+    /// <summary>
+    /// DeleteAsync
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    public async Task DeleteAsync(TEntity entity)
+    {
+        if (entity == null)
+        {
+           throw new ArgumentNullException($"{nameof(AddAsync)} entity must not be null");
+        }
+        await Task.Run(() => table.Remove(entity));
+    }
+
+    /// <summary>
+    /// GetCompleteEntityAsync
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public abstract Task<TEntity> GetCompleteEntityAsync(int id);
 }

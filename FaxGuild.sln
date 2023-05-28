@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCollections.DAL", "EF.Col
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCollections.API", "EFCollections.API\EFCollections.API.csproj", "{A46938BC-C1CE-4EA4-ADB2-55B0CD0BAD43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Forum.BLL", "Forum.BLL\Forum.BLL.csproj", "{C91AB74E-1CF8-44DB-9245-A3918D03C368}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forum.BLL", "Forum.BLL\Forum.BLL.csproj", "{C91AB74E-1CF8-44DB-9245-A3918D03C368}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCollections.BLL", "EFCollections.BLL\EFCollections.BLL.csproj", "{4968F15C-5C23-4FCE-B46B-937530DCD3C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{C91AB74E-1CF8-44DB-9245-A3918D03C368}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C91AB74E-1CF8-44DB-9245-A3918D03C368}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C91AB74E-1CF8-44DB-9245-A3918D03C368}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4968F15C-5C23-4FCE-B46B-937530DCD3C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4968F15C-5C23-4FCE-B46B-937530DCD3C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4968F15C-5C23-4FCE-B46B-937530DCD3C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4968F15C-5C23-4FCE-B46B-937530DCD3C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

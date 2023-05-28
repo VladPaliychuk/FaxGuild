@@ -9,15 +9,14 @@ namespace EFCollections.DAL.Configuration
     {
         public void Configure(EntityTypeBuilder<Collection> builder)
         {
-            builder.Property(collections => collections.Id)
-                   .UseIdentityColumn()
-                   .IsRequired();
+            builder.HasKey(c => c.Id);
 
-            builder.Property(collections => collections.AuthorID)
-                   .HasMaxLength(50)
-                   .IsRequired(); 
+            builder.HasOne(c => c.User)
+                .WithMany(u => u.Collections)
+                .HasForeignKey(c => c.AuthorId);
 
-            new CollectionSeeder().Seed(builder);
+            //builder.HasData(DataSeeder.Collections);
+            //new CollectionSeeder().Seed(builder);
         }
     }
 }
