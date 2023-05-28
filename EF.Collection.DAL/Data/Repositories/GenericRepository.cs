@@ -24,7 +24,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     /// <param name="id"></param>
     /// <returns>TEntity</returns>
     /// <exception cref="EntityNotFoundException"></exception>
-    public async Task<TEntity> GetByIdAsync(int id)
+    public virtual async Task<TEntity> GetByIdAsync(int id)
     {
         return await table.FindAsync(id)
         ?? throw new EntityNotFoundException($"{typeof(TEntity).Name} with id {id} not found.");
@@ -36,7 +36,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     /// </summary>
     /// <returns>IEnumerable<TEntity></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<IEnumerable<TEntity>> GetAllAsync()
+    public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
         return await table.ToListAsync()
         ?? throw new Exception($"Couldn't retrieve entities {typeof(TEntity).Name} ");
@@ -64,7 +64,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public async Task UpdateAsync(TEntity entity)
+    public virtual async Task UpdateAsync(TEntity entity)
     {
         if (entity == null)
         {
@@ -79,7 +79,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public async Task DeleteByIdAsync(int id)
+    public virtual async Task DeleteByIdAsync(int id)
     {
         var entity = await GetByIdAsync(id) ?? throw new EntityNotFoundException($"{typeof(TEntity).Name} with id {id} not found. Cann't delete.");
         await Task.Run(() => table.Remove(entity));
@@ -92,7 +92,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public async Task DeleteAsync(TEntity entity)
+    public virtual async Task DeleteAsync(TEntity entity)
     {
         if (entity == null)
         {

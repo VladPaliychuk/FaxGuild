@@ -34,6 +34,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddScoped<ICollectionService, CollectionService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<ISavedService, SavedService>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

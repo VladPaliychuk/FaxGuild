@@ -1,4 +1,6 @@
-﻿namespace EFCollections.DAL.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace EFCollections.DAL.Entities
 {
     public class Post
     {
@@ -8,10 +10,10 @@
         public string Picture { get; set; } = null!;
         public DateTime CreateTime { get; set; }
 
-        public User? User { get; set; }
+        [JsonIgnore] public User? User { get; set; }
         //public ICollection<User>? Users { get; set; }
-        public ICollection<Storage>? Storages { get; set; }
-        public ICollection<Saved>? Saveds { get; set; }
-        public ICollection<CollectionPost>? CollectionPosts { get; set; }
+        [JsonIgnore] public ICollection<Storage>? Storages { get; set; }
+        [JsonIgnore] public ICollection<Saved>? Saveds { get; set; }
+        [JsonIgnore] public ICollection<CollectionPost>? CollectionPosts { get; set; }
     }
 }

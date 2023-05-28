@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EFCollections.BLL.DTO
+﻿namespace EFCollections.BLL.DTO
 {
-    internal class StorageDto
+    public class StorageDto
     {
+        public int UserId { get; set; }
+        public int PostId { get; set; }
     }
 }

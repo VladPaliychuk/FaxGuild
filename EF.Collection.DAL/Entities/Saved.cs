@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Entities
@@ -14,7 +15,7 @@ namespace EFCollections.DAL.Entities
         public int UserId { get; set; }
         public int PostId { get; set; }
 
-        public User? User { get; set; }
-        public Post? Post { get; set; }
+        [JsonIgnore] public User? User { get; set; }
+        [JsonIgnore] public Post? Post { get; set; }
     }
 }

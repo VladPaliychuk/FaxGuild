@@ -9,5 +9,7 @@ namespace EFCollections.DAL.Interfaces.Repositories
 {
     public interface IStorageRepository : IGenericRepository<Storage>
     {
+        Task<Storage> GetByDoubleIdAsync(int userId, int postId);
+        Task DeleteByDoubleIdAsync(int userId , int postId);
     }
 }

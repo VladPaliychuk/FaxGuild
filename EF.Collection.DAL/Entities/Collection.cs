@@ -12,9 +12,7 @@ namespace EFCollections.DAL.Entities
         public int Id { get; set; }
         public int AuthorId { get; set; }
 
-        [JsonIgnore]
-        public User? User { get; set; }
-        [JsonIgnore]
-        public ICollection<CollectionPost>? CollectionPosts { get; set; }
+        [JsonIgnore] public User? User { get; set; }
+        [JsonIgnore] public ICollection<CollectionPost>? CollectionPosts { get; set; }
     }
 }

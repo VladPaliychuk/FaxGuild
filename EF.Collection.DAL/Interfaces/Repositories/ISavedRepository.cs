@@ -9,5 +9,7 @@ namespace EFCollections.DAL.Interfaces.Repositories
 {
     public interface ISavedRepository : IGenericRepository<Saved>
     {
+        Task<Saved> GetByDoubleIdAsync(int userId, int postId);
+        Task DeleteByDoubleIdAsync(int userId, int postId);
     }
 }

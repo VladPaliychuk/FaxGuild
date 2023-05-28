@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace EFCollections.BLL.DTO
 {
-    internal class CollectionPostDto
+    public class CollectionPostDto
     {
+        public int CollectionId { get; set; }
+        public int PostID { get; set; }
     }
 }
