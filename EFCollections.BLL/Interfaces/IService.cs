@@ -16,7 +16,5 @@ namespace EFCollections.BLL.Interfaces
         Task UpdateAsync(TEntity entity);
 
         Task DeleteByIdAsync(int id);
-
-        Task DeleteAsync(TEntity entity);
     }
 }

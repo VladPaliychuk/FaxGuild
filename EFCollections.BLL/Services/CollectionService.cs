@@ -17,15 +17,18 @@ namespace EFCollections.BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task DeleteAsync(CollectionDto entity)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
-        }
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<CollectionDtoProfile>();
+            });
 
-        public Task DeleteByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+            var mapper = config.CreateMapper();
+
+            await _unitOfWork._collectionRepository.DeleteByIdAsync(id);
+            await _unitOfWork.SaveChangesAsync();
+        }   
 
         public async Task<IEnumerable<CollectionDto>> GetAllAsync()
         {
@@ -80,9 +83,23 @@ namespace EFCollections.BLL.Services
             }
         }
 
-        public Task UpdateAsync(CollectionDto entity)
+        public async Task UpdateAsync(CollectionDto entity)
         {
-            throw new NotImplementedException();
+            if (entity is not null)
+            {
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<CollectionDtoProfile>();
+                });
+
+                var mapper = config.CreateMapper();
+
+                Collection collection = mapper.Map<CollectionDto, Collection>(entity);
+
+                await _unitOfWork._collectionRepository.UpdateAsync(collection);
+                await _unitOfWork.SaveChangesAsync();
+
+            }
         }
     }
 }

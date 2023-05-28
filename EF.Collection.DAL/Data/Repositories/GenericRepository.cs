@@ -83,6 +83,7 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     {
         var entity = await GetByIdAsync(id) ?? throw new EntityNotFoundException($"{typeof(TEntity).Name} with id {id} not found. Cann't delete.");
         await Task.Run(() => table.Remove(entity));
+
     }
 
 
