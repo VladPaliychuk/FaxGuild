@@ -9,6 +9,6 @@ namespace EFCollections.BLL.DTO
     public class CollectionPostDto
     {
         public int CollectionId { get; set; }
-        public int PostID { get; set; }
+        public int PostId { get; set; }
     }
 }

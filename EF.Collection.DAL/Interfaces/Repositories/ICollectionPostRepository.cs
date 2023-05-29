@@ -1,13 +1,10 @@
 ﻿using EFCollections.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EFCollections.DAL.Interfaces.Repositories
 {
     public interface ICollectionPostRepository : IGenericRepository<CollectionPost>
     {
+        Task<CollectionPost> GetByDoubleIdAsync(int collectionId, int postId);
+        Task DeleteByDoubleIdAsync(int collectionId, int postId);
     }
 }

@@ -2,14 +2,8 @@
 using EFCollections.BLL.DTO;
 using EFCollections.BLL.Interfaces;
 using EFCollections.BLL.Profiles;
-using EFCollections.DAL.Data.Repositories;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EFCollections.BLL.Services
 {

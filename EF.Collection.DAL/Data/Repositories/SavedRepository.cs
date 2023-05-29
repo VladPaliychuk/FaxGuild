@@ -22,7 +22,6 @@ namespace EFCollections.DAL.Data.Repositories
         {
             var entity = await GetByDoubleIdAsync(userId, postId) ?? throw new EntityNotFoundException($"{typeof(Saved).Name} with id {userId},{postId} not found. Cann't delete.");
             await Task.Run(() => table.Remove(entity));
-
         }
     }
 }

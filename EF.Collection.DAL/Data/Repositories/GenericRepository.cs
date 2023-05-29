@@ -1,7 +1,10 @@
 using EFCollections.DAL.Data;
+using EFCollections.DAL.Entities;
 using EFCollections.DAL.Exceptions;
 using EFCollections.DAL.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
 namespace MyEventsEntityFrameworkDb.EFRepositories;
 
 public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
@@ -107,4 +110,23 @@ public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> w
     /// <param name="id"></param>
     /// <returns></returns>
     public abstract Task<TEntity> GetCompleteEntityAsync(int id);
+
+    public IQueryable<TEntity> ApplySorting(IQueryable<TEntity> query, string sortColumn, string sortDirection)
+    {
+        if (!string.IsNullOrEmpty(sortColumn) && !string.IsNullOrEmpty(sortDirection))
+        {
+            string propertyName = sortColumn;
+            bool isDescending = sortDirection.ToLower() == "desc";
+
+            var parameter = Expression.Parameter(typeof(TEntity), "x");
+            var property = Expression.Property(parameter, propertyName);
+            var selector = Expression.Lambda(property, parameter);
+
+            query = isDescending ?
+                query.OrderByDescending((Expression<Func<TEntity, object>>)selector) :
+                query.OrderBy((Expression<Func<TEntity, object>>)selector);
+        }
+
+        return query;
+    }
 }

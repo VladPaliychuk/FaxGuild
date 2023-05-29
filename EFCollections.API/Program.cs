@@ -37,6 +37,8 @@ builder.Services.AddScoped<ICollectionService, CollectionService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddScoped<ISavedService, SavedService>();
+builder.Services.AddScoped<ICollectionPostService, CollectionPostService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
