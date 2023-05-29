@@ -1,6 +1,8 @@
 ﻿using EFCollections.BLL.DTO;
 using EFCollections.BLL.Interfaces;
+using EFCollections.BLL.Validation;
 using EFCollections.DAL.Interfaces.Repositories;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EFCollections.API.Controllers
@@ -98,6 +100,16 @@ namespace EFCollections.API.Controllers
                     _logger.LogInformation($"Ми отримали некоректний json зі сторони клієнта");
                     return BadRequest("Обєкт івенту є некоректним");
                 }
+
+                SavedValidator validator = new SavedValidator();
+                ValidationResult result = validator.Validate(saved);
+
+                if (!result.IsValid)
+                {
+                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
+                    return BadRequest(errors);
+                }
+
                 await _savedService.InsertAsync(saved);
                 return StatusCode(StatusCodes.Status201Created);
             }
