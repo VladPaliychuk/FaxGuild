@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.DTO;
+using EFCollections.BLL.Configurations.Profiles;
+using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.BLL.Profiles;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
 using System;
@@ -15,37 +16,20 @@ namespace EFCollections.BLL.Services
     public class CollectionPostService : ICollectionPostService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CollectionPostService(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public CollectionPostService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task DeleteByDoubleIdAsync(int collectionId, int postId)
+        public async Task DeleteByDoubleIdAsync(int userId, int postId)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CollectionPostDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
-            await _unitOfWork._collectionPostRepository.DeleteByDoubleIdAsync(collectionId, postId);
+            await _unitOfWork._collectionPostRepository.DeleteByDoubleIdAsync(userId, postId);
             await _unitOfWork.SaveChangesAsync();
-        }
-
-        public Task DeleteByIdAsync(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task DeleteByCollectionAsync(int collectionId)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CollectionPostDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
             var collectionPosts = await _unitOfWork._collectionPostRepository.GetAllAsync();
 
             foreach (var collectionPost in collectionPosts)
@@ -57,76 +41,29 @@ namespace EFCollections.BLL.Services
             }
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task<IEnumerable<CollectionPostDto>> GetAllAsync()
+        public async Task DeleteByIdAsync(int id)
         {
-            var collectionPosts = await _unitOfWork._collectionPostRepository.GetAllAsync();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CollectionPostProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            var completeCollectionPostDto = new List<CollectionPostDto>();
-
-            foreach (var item in collectionPosts)
-            {
-                CollectionPostDto collectionPostDto = mapper.Map<CollectionPostDto>(item);
-                completeCollectionPostDto.Add(collectionPostDto);
-            }
-            return completeCollectionPostDto;
+            await _unitOfWork._collectionPostRepository.DeleteByIdAsync(id);
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<CollectionPostDto> GetByIdAsync(int id)
+        public async Task<IEnumerable<CollectionPostResponse>> GetAllAsync()
         {
-            var collectionPost = await _unitOfWork._collectionPostRepository.GetByIdAsync(id);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CollectionPostProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            CollectionPostDto collectionPostDto = mapper.Map<CollectionPostDto>(collectionPost);
-            return collectionPostDto;
+            var posts = await _unitOfWork._collectionPostRepository.GetAllAsync();
+            return posts?.Select(_mapper.Map<CollectionPost, CollectionPostResponse>);
         }
 
-        public async Task InsertAsync(CollectionPostDto entity)
+        public async Task<CollectionPostResponse> GetByIdAsync(int id)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<CollectionPostDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-
-                CollectionPost collectionPost = mapper.Map<CollectionPostDto, CollectionPost>(entity);
-
-                await _unitOfWork._collectionPostRepository.AddAsync(collectionPost);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+            var post = await _unitOfWork._collectionPostRepository.GetByIdAsync(id);
+            return _mapper.Map<CollectionPost, CollectionPostResponse>(post);
         }
 
-        public async Task UpdateAsync(CollectionPostDto entity)
+        public async Task InsertAsync(CollectionPostRequest request)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<CollectionDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-
-                CollectionPost collectionPost = mapper.Map<CollectionPostDto, CollectionPost>(entity);
-
-                await _unitOfWork._collectionPostRepository.UpdateAsync(collectionPost);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+            var collectionPost = _mapper.Map<CollectionPostRequest, CollectionPost>(request);
+            await _unitOfWork._collectionPostRepository.AddAsync(collectionPost);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

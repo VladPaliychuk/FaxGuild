@@ -154,7 +154,7 @@ namespace Forum.API.Controllers
         /// <param name="postId"></param>
         /// <param name="tagName">example: Cyril7</param>
         /// <returns></returns>
-        [HttpPost("{postId}, {tagName}")]
+        [HttpPost("AddTagToPostAsync {postId}, {tagName}")]
         public async Task<ActionResult> AddTagToPostAsync(int postId, string tagName)
         {
             try

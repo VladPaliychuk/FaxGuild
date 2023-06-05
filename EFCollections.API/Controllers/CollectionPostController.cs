@@ -1,4 +1,5 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
 using EFCollections.BLL.Services;
 using EFCollections.BLL.Validation;
@@ -25,7 +26,7 @@ namespace EFCollections.API.Controllers
             _collectionPostRepository = collectionPostRepository;
         }
         [HttpGet("Get BLL")]
-        public async Task<ActionResult<IEnumerable<CollectionPostDto>>> GeAllBLLAsync()
+        public async Task<ActionResult<IEnumerable<CollectionPostResponse>>> GeAllBLLAsync()
         {
             try
             {
@@ -85,7 +86,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpPost("InserBLL")]
-        public async Task<ActionResult> Insert([FromBody] CollectionPostDto post)
+        public async Task<ActionResult> Insert([FromBody] CollectionPostRequest post)
         {
             try
             {
@@ -100,15 +101,6 @@ namespace EFCollections.API.Controllers
                     return BadRequest("Обєкт івенту є некоректним");
                 }
 
-                CollectionPostValidator validator = new CollectionPostValidator();
-                ValidationResult result = validator.Validate(post);
-
-                if (!result.IsValid)
-                {
-                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
-                    return BadRequest(errors);
-                }
-
                 await _collectionPostService.InsertAsync(post);
                 return StatusCode(StatusCodes.Status201Created);
             }
@@ -120,7 +112,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpGet("BLL{id}")]
-        public async Task<ActionResult<CollectionPostDto>> GetByIdBLLAsync(int id)
+        public async Task<ActionResult<CollectionPostResponse>> GetByIdBLLAsync(int id)
         {
             try
             {
@@ -140,41 +132,6 @@ namespace EFCollections.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetByIdAsync() - {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
-            }
-        }
-
-        [HttpPut("Update BLL")]
-        public async Task<ActionResult<CollectionPostDto>> UpdateAsync([FromBody] CollectionPostDto post)
-        {
-            try
-            {
-                if (post == null)
-                {
-                    _logger.LogInformation($"Ми отримали пустий json зі сторони клієнта");
-                    return BadRequest("Обєкт івенту є null");
-                }
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogInformation($"Ми отримали некоректний json зі сторони клієнта");
-                    return BadRequest("Обєкт івенту є некоректним");
-                }
-
-                CollectionPostValidator validator = new CollectionPostValidator();
-                ValidationResult result = validator.Validate(post);
-
-                if (!result.IsValid)
-                {
-                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
-                    return BadRequest(errors);
-                }
-
-                await _collectionPostService.UpdateAsync(post);
-                return StatusCode(StatusCodes.Status201Created);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі InsertAsync - {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
             }
         }

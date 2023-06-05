@@ -11,9 +11,6 @@ namespace EFCollections.BLL.Interfaces
         Task<IEnumerable<TEntity>> GetAllAsync();
 
         Task<TEntity> GetByIdAsync(int id);
-        Task InsertAsync(TEntity entity);
-
-        Task UpdateAsync(TEntity entity);
 
         Task DeleteByIdAsync(int id);
     }

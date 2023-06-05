@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.DTO;
+using EFCollections.BLL.Configurations.Profiles;
+using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.BLL.Profiles;
 using EFCollections.DAL.Data.Repositories;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
@@ -15,39 +16,22 @@ namespace EFCollections.BLL.Services
 {
     public class StorageService : IStorageService
     {
-        private IUnitOfWork _unitOfWork;
-        public StorageService(IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public StorageService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task DeleteByDoubleIdAsync(int userId, int postId)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<StorageDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
             await _unitOfWork._storageRepository.DeleteByDoubleIdAsync(userId, postId);
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task DeleteByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteByUserAsync(int userId)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<StorageDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
             var storages = await _unitOfWork._storageRepository.GetAllAsync();
 
             foreach (var storage in storages)
@@ -59,76 +43,36 @@ namespace EFCollections.BLL.Services
             }
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task<IEnumerable<StorageDto>> GetAllAsync()
+        public async Task DeleteByIdAsync(int id)
         {
-            var storages = await _unitOfWork._storageRepository.GetAllAsync();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<StorageProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            var completeStorageDto = new List<StorageDto>();
-
-            foreach (var item in storages)
-            {
-                StorageDto storageDto = mapper.Map<StorageDto>(item);
-                completeStorageDto.Add(storageDto);
-            }
-            return completeStorageDto;
+            await _unitOfWork._storageRepository.DeleteByIdAsync(id);
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<StorageDto> GetByIdAsync(int id)
+        public async Task<IEnumerable<StorageResponse>> GetAllAsync()
         {
-            var storage = await _unitOfWork._storageRepository.GetByIdAsync(id);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<StorageProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            StorageDto storageDto = mapper.Map<StorageDto>(storage);
-            return storageDto;
+            var posts = await _unitOfWork._storageRepository.GetAllAsync();
+            return posts?.Select(_mapper.Map<Storage, StorageResponse>);
         }
 
-        public async Task InsertAsync(StorageDto entity)
+        public async Task<StorageResponse> GetByIdAsync(int id)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<StorageDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-
-                Storage storage = mapper.Map<StorageDto, Storage>(entity);
-
-                await _unitOfWork._storageRepository.AddAsync(storage);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+            var post = await _unitOfWork._storageRepository.GetByIdAsync(id);
+            return _mapper.Map<Storage, StorageResponse>(post);
         }
 
-        public async Task UpdateAsync(StorageDto entity)
+        public async Task InsertAsync(StorageRequest request)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<CollectionDtoProfile>();
-                });
+            var storage = _mapper.Map<StorageRequest, Storage>(request);
+            await _unitOfWork._storageRepository.AddAsync(storage);
+            await _unitOfWork.SaveChangesAsync();
+        }
 
-                var mapper = config.CreateMapper();
-
-                Storage storage = mapper.Map<StorageDto, Storage>(entity);
-
-                await _unitOfWork._storageRepository.UpdateAsync(storage);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+        public async Task UpdateAsync(StorageRequest request)
+        {
+            var post = _mapper.Map<StorageRequest, Storage>(request);
+            await _unitOfWork._storageRepository.UpdateAsync(post);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Responses;
 using FluentValidation;
 
 namespace EFCollections.BLL.Validation
 {
-    public class PostValidator : AbstractValidator<PostDto>
+    public class PostValidator : AbstractValidator<PostResponse>
     {
         public PostValidator()
         {

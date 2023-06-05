@@ -1,5 +1,6 @@
-﻿using EFCollections.DAL.Interfaces.Repositories;
-using System.Data;
+﻿using EFCollections.DAL.Entities;
+using EFCollections.DAL.Interfaces.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace EFCollections.DAL.Data.Repositories
 {
@@ -8,7 +9,8 @@ namespace EFCollections.DAL.Data.Repositories
         protected readonly CollectionContext databaseContext;
 
         public ICollectionRepository _collectionRepository { get; }
-        public IUserRepository _userRepository { get; }
+        public UserManager<User> _userManager { get; }
+        public SignInManager<User> _signInManager { get; }
         public IStorageRepository _storageRepository { get; }
         public ISavedRepository _savedRepository { get; }
         public IPostRepository _postRepository { get; }
@@ -16,7 +18,8 @@ namespace EFCollections.DAL.Data.Repositories
         public UnitOfWork(
              CollectionContext databaseContext,
              ICollectionRepository collectionRepository,
-             IUserRepository userRepository,
+             UserManager<User> userManager,
+             SignInManager<User> signInManager,
              IStorageRepository storageRepository,
              ISavedRepository savedRepository,
              IPostRepository postRepository,
@@ -25,7 +28,8 @@ namespace EFCollections.DAL.Data.Repositories
         {
             this.databaseContext = databaseContext;
             this._collectionRepository = collectionRepository;
-            this._userRepository = userRepository;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
             this._storageRepository = storageRepository;
             this._savedRepository = savedRepository;
             this._postRepository = postRepository;

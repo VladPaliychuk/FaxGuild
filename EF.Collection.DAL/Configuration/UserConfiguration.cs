@@ -9,7 +9,7 @@ namespace EFCollections.DAL.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(u => u.Id);
+            //builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Name);
 

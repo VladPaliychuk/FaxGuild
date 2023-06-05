@@ -8,7 +8,7 @@ namespace EFCollections.DAL.Data.Repositories
     public class CollectionRepository : GenericRepository<Collection>, ICollectionRepository
     {
         public CollectionRepository(CollectionContext collectionContext) : base(collectionContext) { }
-        DbSet<Collection> DbSet { get; set; }
+        //DbSet<Collection> DbSet { get; set; }
         public override Task<Collection> GetCompleteEntityAsync(int id)
         {
             throw new NotImplementedException();

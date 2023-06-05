@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EFCollections.BLL.DTO
+namespace EFCollections.BLL.DTO.Responses
 {
-    public class CollectionPostDto
+    public class CollectionPostResponse
     {
         public int CollectionId { get; set; }
         public int PostId { get; set; }

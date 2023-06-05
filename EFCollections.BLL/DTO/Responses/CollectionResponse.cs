@@ -1,6 +1,6 @@
-﻿namespace EFCollections.BLL.DTO
+﻿namespace EFCollections.BLL.DTO.Responses
 {
-    public class CollectionDto
+    public class CollectionResponse
     {
         public int Id { get; set; }
         public int AuthorId { get; set; }

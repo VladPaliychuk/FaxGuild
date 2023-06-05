@@ -1,4 +1,4 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Responses;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EFCollections.BLL.Validation
 {
-    public class StorageValidator : AbstractValidator<StorageDto>
+    public class StorageValidator : AbstractValidator<StorageResponse>
     {
         public StorageValidator()
         {

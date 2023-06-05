@@ -1,4 +1,5 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
 using EFCollections.BLL.Validation;
 using EFCollections.DAL.Entities;
@@ -27,7 +28,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpGet("Get BLL")]
-        public async Task<ActionResult<IEnumerable<StorageDto>>> GeAllBLLAsync()
+        public async Task<ActionResult<IEnumerable<StorageResponse>>> GeAllBLLAsync()
         {
             try
             {
@@ -87,7 +88,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpPost("InserBLL")]
-        public async Task<ActionResult> Insert([FromBody] StorageDto storage)
+        public async Task<ActionResult> Insert([FromBody] StorageRequest storage)
         {
             try
             {
@@ -102,15 +103,6 @@ namespace EFCollections.API.Controllers
                     return BadRequest("Обєкт івенту є некоректним");
                 }
 
-                StorageValidator validator = new StorageValidator();
-                ValidationResult result = validator.Validate(storage);
-
-                if (!result.IsValid)
-                {
-                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
-                    return BadRequest(errors);
-                }
-
                 await _storageService.InsertAsync(storage);
                 return StatusCode(StatusCodes.Status201Created);
             }
@@ -122,7 +114,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpGet("BLL{id}")]
-        public async Task<ActionResult<StorageDto>> GetByIdBLLAsync(int id)
+        public async Task<ActionResult<StorageResponse>> GetByIdBLLAsync(int id)
         {
             try
             {

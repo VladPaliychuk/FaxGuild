@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.DTO;
+using EFCollections.BLL.Configurations.Profiles;
+using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.BLL.Profiles;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
 
@@ -10,95 +11,46 @@ namespace EFCollections.BLL.Services
     public class PostService : IPostService
     {
         private readonly IPostRepository _postRepository;
-        private IUnitOfWork _unitOfWork;
-        public PostService(IPostRepository postRepository, IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public PostService(IPostRepository postRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _postRepository = postRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<PostDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
             await _unitOfWork._postRepository.DeleteByIdAsync(id);
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<PostDto>> GetAllAsync()
+        public async Task<IEnumerable<PostResponse>> GetAllAsync()
         {
             var posts = await _postRepository.GetAllAsync();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<PostProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            var completePostDto = new List<PostDto>();
-
-            foreach (var item in posts)
-            {
-                PostDto postDto = mapper.Map<PostDto>(item);
-                completePostDto.Add(postDto);
-            }
-            return completePostDto;
+            return posts?.Select(_mapper.Map<Post, PostResponse>);
         }
 
-        public async Task<PostDto> GetByIdAsync(int id)
+        public async Task<PostResponse> GetByIdAsync(int id)
         {
-            var post = await _postRepository.GetByIdAsync(id);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<PostProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            PostDto postDto = mapper.Map<PostDto>(post);
-            return postDto;
+            var post = await _postRepository.GetByIdAsync(id); 
+            return _mapper.Map<Post, PostResponse>(post);
         }
 
-        public async Task InsertAsync(PostDto entity)
+        public async Task InsertAsync(PostRequest request)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<PostDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-                //entity.CreateTime = DateTime.Now;
-                Post post = mapper.Map<PostDto, Post>(entity);
-                await _unitOfWork._postRepository.AddAsync(post);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+            request.CreateTime = DateTime.Now;
+            var post = _mapper.Map<PostRequest, Post>(request);
+            await _unitOfWork._postRepository.AddAsync(post);
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(PostDto entity)
+        public async Task UpdateAsync(PostRequest request)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<PostDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-
-                Post post = mapper.Map<PostDto, Post>(entity);
-
-                await _unitOfWork._postRepository.UpdateAsync(post);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+            var post = _mapper.Map<PostRequest, Post>(request);
+            await _unitOfWork._postRepository.UpdateAsync(post);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

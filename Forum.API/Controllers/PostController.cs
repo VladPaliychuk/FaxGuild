@@ -23,7 +23,7 @@ namespace Forum.API.Controllers
             _postService = postService;
         }
 
-        [HttpGet("BLL-GetById")]
+        [HttpGet("GetById BLL")]
         public async Task<ActionResult<PostDto>> GetPostById(int id)
         {
             var posts = await _postService.GetPostById(id);
@@ -67,7 +67,7 @@ namespace Forum.API.Controllers
             }
         }
 
-        [HttpGet("GetAverageLikes")]
+        [HttpGet("GetAverageLikes BLL")]
         public async Task<ActionResult<int>> GetAverageLikesAsync()
         {
             try

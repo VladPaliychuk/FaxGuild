@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 namespace EFCollections.DAL.Entities
 {
-    public class User
+    public class User : IdentityUser<int>
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
+        public string Role { get; set; } = null!;
 
         [JsonIgnore] public ICollection<Storage>? Storages { get; set; }
         [JsonIgnore] public ICollection<Saved>? Saveds { get; set; }

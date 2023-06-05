@@ -1,4 +1,5 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
 using EFCollections.BLL.Validation;
 using EFCollections.DAL.Entities;
@@ -27,7 +28,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpGet("Get BLL")]
-        public async Task<ActionResult<IEnumerable<CollectionDto>>> GeAllBLLAsync()
+        public async Task<ActionResult<IEnumerable<CollectionResponse>>> GeAllBLLAsync()
         {
             try
             {
@@ -65,7 +66,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpPost("InserBLL")]
-        public async Task<ActionResult> Insert([FromBody] CollectionDto collection)
+        public async Task<ActionResult> Insert([FromBody] CollectionRequest collection)
         {
             try
             {
@@ -80,15 +81,6 @@ namespace EFCollections.API.Controllers
                     return BadRequest("Обєкт івенту є некоректним");
                 }
 
-                CollectionValidator validator = new CollectionValidator();
-                ValidationResult result = validator.Validate(collection);
-
-                if (!result.IsValid)
-                {
-                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
-                    return BadRequest(errors);
-                }
-
                 await _collectionService.InsertAsync(collection);
                 return StatusCode(StatusCodes.Status201Created);
             }
@@ -100,7 +92,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpGet("BLL{id}")]
-        public async Task<ActionResult<CollectionDto>> GetByIdBLLAsync(int id)
+        public async Task<ActionResult<CollectionResponse>> GetByIdBLLAsync(int id)
         {
             try
             {
@@ -125,7 +117,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpPut("Update BLL")]
-        public async Task<ActionResult<CollectionDto>> UpdateAsync([FromBody] CollectionDto collection)
+        public async Task<ActionResult<CollectionResponse>> UpdateAsync([FromBody] CollectionRequest collection)
         {
             try
             {
@@ -138,15 +130,6 @@ namespace EFCollections.API.Controllers
                 {
                     _logger.LogInformation($"Ми отримали некоректний json зі сторони клієнта");
                     return BadRequest("Обєкт івенту є некоректним");
-                }
-
-                CollectionValidator validator = new CollectionValidator();
-                ValidationResult result = validator.Validate(collection);
-
-                if (!result.IsValid)
-                {
-                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
-                    return BadRequest(errors);
                 }
 
                 await _collectionService.UpdateAsync(collection);

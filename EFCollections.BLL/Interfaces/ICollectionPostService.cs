@@ -1,4 +1,5 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace EFCollections.BLL.Interfaces
 {
-    public interface ICollectionPostService : IService<CollectionPostDto>
+    public interface ICollectionPostService : IService<CollectionPostResponse>
     {
 
         Task DeleteByDoubleIdAsync(int collectionId, int postId);
         Task DeleteByCollectionAsync(int collectionId);
+        Task InsertAsync(CollectionPostRequest request);
     }
 }

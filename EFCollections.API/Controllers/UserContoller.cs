@@ -1,5 +1,8 @@
-﻿using EFCollections.BLL.DTO;
+﻿using Azure.Core;
+using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
+using EFCollections.BLL.Services;
 using EFCollections.BLL.Validation;
 using EFCollections.DAL.Interfaces.Repositories;
 using FluentValidation.Results;
@@ -13,7 +16,6 @@ namespace EFCollections.API.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
-        private readonly IUserRepository _userRepository;
         public UserController(
             ILogger<UserController> logger,
             IUserRepository userRepository,
@@ -22,46 +24,10 @@ namespace EFCollections.API.Controllers
         {
             _logger = logger;
             _userService = userService;
-            _userRepository = userRepository;
-        }
-        /// <summary>
-        /// Get filtered users with id less then specified
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("Get FilteredUser {lessThen}")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetFilteredUserAsync(int lessThen)
-        {
-            try
-            {
-                var result = await _userService.GetFilteredUsersAsync(lessThen);
-                _logger.LogInformation($"Отримали всі пости з бази даних!");
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetSortedUsers() - {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
-            }
-        }
-
-        [HttpGet("Get SortedByName BLL")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetSortedUsersAsync()
-        {
-            try
-            {
-                var result = await _userService.GetSortByNameAsync();
-                _logger.LogInformation($"Отримали всі пости з бази даних!");
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі GetSortedUsers() - {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
-            }
         }
 
         [HttpGet("Get BLL")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GeAllBLLAsync()
+        public async Task<ActionResult<IEnumerable<UserResponse>>> GeAllBLLAsync()
         {
             try
             {
@@ -98,8 +64,8 @@ namespace EFCollections.API.Controllers
             }
         }
 
-        [HttpPost("InserBLL")]
-        public async Task<ActionResult> Insert([FromBody] UserDto user)
+        /*[HttpPost("InserBLL")]
+        public async Task<ActionResult> Insert([FromBody] UserResponse user)
         {
             try
             {
@@ -131,10 +97,10 @@ namespace EFCollections.API.Controllers
                 _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі InsertAsync - {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
             }
-        }
+        }*/
 
         [HttpGet("BLL{id}")]
-        public async Task<ActionResult<UserDto>> GetByIdBLLAsync(int id)
+        public async Task<ActionResult<UserResponse>> GetByIdBLLAsync(int id)
         {
             try
             {
@@ -159,11 +125,11 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpPut("Update BLL")]
-        public async Task<ActionResult<UserDto>> UpdateAsync([FromBody] UserDto user)
+        public async Task<ActionResult<UserResponse>> UpdateAsync([FromBody] UserRequest request)
         {
             try
             {
-                if (user == null)
+                if (request == null)
                 {
                     _logger.LogInformation($"Ми отримали пустий json зі сторони клієнта");
                     return BadRequest("Обєкт івенту є null");
@@ -174,17 +140,8 @@ namespace EFCollections.API.Controllers
                     return BadRequest("Обєкт івенту є некоректним");
                 }
 
-                UserValidator validator = new UserValidator();
-                ValidationResult result = validator.Validate(user);
-
-                if (!result.IsValid)
-                {
-                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
-                    return BadRequest(errors);
-                }
-
-                await _userService.UpdateAsync(user);
-                return StatusCode(StatusCodes.Status201Created);
+                await _userService.UpdateAsync(request);
+                return Ok();
             }
             catch (Exception ex)
             {

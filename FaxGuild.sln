@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCollections.API", "EFColl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Forum.BLL", "Forum.BLL\Forum.BLL.csproj", "{C91AB74E-1CF8-44DB-9245-A3918D03C368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCollections.BLL", "EFCollections.BLL\EFCollections.BLL.csproj", "{4968F15C-5C23-4FCE-B46B-937530DCD3C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCollections.BLL", "EFCollections.BLL\EFCollections.BLL.csproj", "{4968F15C-5C23-4FCE-B46B-937530DCD3C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

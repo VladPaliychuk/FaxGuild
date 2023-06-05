@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 
 namespace EFCollections.DAL.Seeding
 {
-    public static class DataSeeder
+/*    public static class DataSeeder
     {
         static DataSeeder()
         {
@@ -72,7 +72,7 @@ namespace EFCollections.DAL.Seeding
                 .RuleFor(cp => cp.CollectionId, f => f.PickRandom(Collections).Id)
                 .RuleFor(cp => cp.PostId, f => f.PickRandom(Posts).Id);
         }
-        /*public static List<User> Users { get; set; } = new();
+        *//*public static List<User> Users { get; set; } = new();
         public static List<Storage> Storages { get; set; } = new();
         public static List<Saved> Saveds { get; set; } = new();
         public static List<Post> Posts { get; set; } = new();
@@ -103,6 +103,6 @@ namespace EFCollections.DAL.Seeding
             CollectionPosts = new Faker<CollectionPost>()
                 .RuleFor(cp => cp.CollectionId, f => f.PickRandom(Collections).Id)
                 .RuleFor(cp => cp.PostId, f => f.PickRandom(Posts).Id);
-        }*/
-    }
+        }*//*
+    }*/
 }

@@ -1,4 +1,5 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
 using EFCollections.BLL.Validation;
 using EFCollections.DAL.Interfaces.Repositories;
@@ -26,7 +27,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpGet("Get BLL")]
-        public async Task<ActionResult<IEnumerable<SavedDto>>> GeAllBLLAsync()
+        public async Task<ActionResult<IEnumerable<SavedResponse>>> GeAllBLLAsync()
         {
             try
             {
@@ -86,7 +87,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpPost("InserBLL")]
-        public async Task<ActionResult> Insert([FromBody] SavedDto saved)
+        public async Task<ActionResult> Insert([FromBody] SavedRequest saved)
         {
             try
             {
@@ -101,15 +102,6 @@ namespace EFCollections.API.Controllers
                     return BadRequest("Обєкт івенту є некоректним");
                 }
 
-                SavedValidator validator = new SavedValidator();
-                ValidationResult result = validator.Validate(saved);
-
-                if (!result.IsValid)
-                {
-                    List<string> errors = result.Errors.Select(error => error.ErrorMessage).ToList();
-                    return BadRequest(errors);
-                }
-
                 await _savedService.InsertAsync(saved);
                 return StatusCode(StatusCodes.Status201Created);
             }
@@ -121,7 +113,7 @@ namespace EFCollections.API.Controllers
         }
 
         [HttpGet("BLL{id}")]
-        public async Task<ActionResult<SavedDto>> GetByIdBLLAsync(int id)
+        public async Task<ActionResult<SavedResponse>> GetByIdBLLAsync(int id)
         {
             try
             {

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.DTO;
+using EFCollections.BLL.Configurations.Profiles;
+using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.BLL.Profiles;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
 
@@ -9,97 +10,44 @@ namespace EFCollections.BLL.Services
 {
     public class CollectionService : ICollectionService
     {
-        private readonly ICollectionRepository _collectionRepository;
-        private IUnitOfWork _unitOfWork;
-        public CollectionService(ICollectionRepository collectionRepository, IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public CollectionService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _collectionRepository = collectionRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CollectionDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
             await _unitOfWork._collectionRepository.DeleteByIdAsync(id);
             await _unitOfWork.SaveChangesAsync();
-        }   
-
-        public async Task<IEnumerable<CollectionDto>> GetAllAsync()
-        {
-            var collections = await _collectionRepository.GetAllAsync();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CollectionProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            var completeCollectionDto = new List<CollectionDto>();
-
-            foreach (var item in collections)
-            {
-                CollectionDto collectionDto = mapper.Map<CollectionDto>(item);
-                completeCollectionDto.Add(collectionDto);
-            }
-            return completeCollectionDto;
         }
 
-        public async Task<CollectionDto> GetByIdAsync(int id)
+        public async Task<IEnumerable<CollectionResponse>> GetAllAsync()
         {
-            var collection = await _collectionRepository.GetByIdAsync(id);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<CollectionProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            CollectionDto collectionDto = mapper.Map<CollectionDto>(collection);
-            return collectionDto;
+            var posts = await _unitOfWork._collectionRepository.GetAllAsync();
+            return posts?.Select(_mapper.Map<Collection, CollectionResponse>);
         }
 
-        public async Task InsertAsync(CollectionDto entity)
+        public async Task<CollectionResponse> GetByIdAsync(int id)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<CollectionDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-
-                Collection collection = mapper.Map<CollectionDto, Collection>(entity);
-
-                await _unitOfWork._collectionRepository.AddAsync(collection);
-                await _unitOfWork.SaveChangesAsync();
-                
-            }
+            var post = await _unitOfWork._collectionRepository.GetByIdAsync(id);
+            return _mapper.Map<Collection, CollectionResponse>(post);
         }
 
-        public async Task UpdateAsync(CollectionDto entity)
+        public async Task InsertAsync(CollectionRequest request)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<CollectionDtoProfile>();
-                });
+            var collection = _mapper.Map<CollectionRequest, Collection>(request);
+            await _unitOfWork._collectionRepository.AddAsync(collection);
+            await _unitOfWork.SaveChangesAsync();
+        }
 
-                var mapper = config.CreateMapper();
-
-                Collection collection = mapper.Map<CollectionDto, Collection>(entity);
-
-                await _unitOfWork._collectionRepository.UpdateAsync(collection);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+        public async Task UpdateAsync(CollectionRequest request)
+        {
+            var post = _mapper.Map<CollectionRequest, Collection>(request);
+            await _unitOfWork._collectionRepository.UpdateAsync(post);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

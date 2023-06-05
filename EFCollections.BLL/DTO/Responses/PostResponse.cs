@@ -1,11 +1,11 @@
-﻿namespace EFCollections.BLL.DTO
+﻿namespace EFCollections.BLL.DTO.Responses
 {
-    public class PostDto
+    public class PostResponse
     {
         public int Id { get; set; }
         public int Likes { get; set; }
         public int UserId { get; set; }
-        public string Picture { get; set; }
+        public string Picture { get; set; } = null!;
         public DateTime CreateTime { get; set; }
     }
 }

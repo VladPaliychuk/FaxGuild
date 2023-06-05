@@ -22,9 +22,10 @@ builder.Services.AddScoped<IDbTransaction>(s =>
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IPostTagRepository, PostTagRepository>();
-builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IPostTagRepository, PostTagRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddScoped<IPostService, PostService>();
 
 var app = builder.Build();
 

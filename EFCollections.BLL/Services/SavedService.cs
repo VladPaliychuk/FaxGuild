@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.DTO;
+using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.BLL.Profiles;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
 
@@ -9,39 +9,22 @@ namespace EFCollections.BLL.Services
 {
     public class SavedService : ISavedService
     {
-        private IUnitOfWork _unitOfWork;
-        public SavedService(IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public SavedService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task DeleteByDoubleIdAsync(int userId, int postId)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<SavedDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
             await _unitOfWork._savedRepository.DeleteByDoubleIdAsync(userId, postId);
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public Task DeleteByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteByUserAsync(int userId)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<SavedDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-
             var saveds = await _unitOfWork._savedRepository.GetAllAsync();
 
             foreach (var saved in saveds)
@@ -53,76 +36,36 @@ namespace EFCollections.BLL.Services
             }
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task<IEnumerable<SavedDto>> GetAllAsync()
+        public async Task DeleteByIdAsync(int id)
         {
-            var saveds = await _unitOfWork._savedRepository.GetAllAsync();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<SavedProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            var completeSavedDto = new List<SavedDto>();
-
-            foreach (var item in saveds)
-            {
-                SavedDto savedDto = mapper.Map<SavedDto>(item);
-                completeSavedDto.Add(savedDto);
-            }
-            return completeSavedDto;
+            await _unitOfWork._savedRepository.DeleteByIdAsync(id);
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<SavedDto> GetByIdAsync(int id)
+        public async Task<IEnumerable<SavedResponse>> GetAllAsync()
         {
-            var saved = await _unitOfWork._savedRepository.GetByIdAsync(id);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<SavedProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            SavedDto savedDto = mapper.Map<SavedDto>(saved);
-            return savedDto;
+            var posts = await _unitOfWork._savedRepository.GetAllAsync();
+            return posts?.Select(_mapper.Map<Saved, SavedResponse>);
         }
 
-        public async Task InsertAsync(SavedDto entity)
+        public async Task<SavedResponse> GetByIdAsync(int id)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<SavedDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-
-                Saved saved = mapper.Map<SavedDto, Saved>(entity);
-
-                await _unitOfWork._savedRepository.AddAsync(saved);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+            var post = await _unitOfWork._savedRepository.GetByIdAsync(id);
+            return _mapper.Map<Saved, SavedResponse>(post);
         }
 
-        public async Task UpdateAsync(SavedDto entity)
+        public async Task InsertAsync(SavedRequest request)
         {
-            if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<CollectionDtoProfile>();
-                });
+            var saved = _mapper.Map<SavedRequest, Saved>(request);
+            await _unitOfWork._savedRepository.AddAsync(saved);
+            await _unitOfWork.SaveChangesAsync();
+        }
 
-                var mapper = config.CreateMapper();
-
-                Saved saved = mapper.Map<SavedDto, Saved>(entity);
-
-                await _unitOfWork._savedRepository.UpdateAsync(saved);
-                await _unitOfWork.SaveChangesAsync();
-
-            }
+        public async Task UpdateAsync(SavedRequest request)
+        {
+            var post = _mapper.Map<SavedRequest, Saved>(request);
+            await _unitOfWork._savedRepository.UpdateAsync(post);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

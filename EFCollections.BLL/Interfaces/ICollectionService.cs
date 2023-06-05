@@ -1,8 +1,12 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 
 namespace EFCollections.BLL.Interfaces
 {
-    public interface ICollectionService : IService<CollectionDto>
+    public interface ICollectionService : IService<CollectionResponse>
     {
+        Task InsertAsync(CollectionRequest request);
+
+        Task UpdateAsync(CollectionRequest request);
     }
 }

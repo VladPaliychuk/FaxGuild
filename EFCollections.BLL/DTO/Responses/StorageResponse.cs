@@ -1,6 +1,6 @@
-﻿namespace EFCollections.BLL.DTO
+﻿namespace EFCollections.BLL.DTO.Responses
 {
-    public class SavedDto
+    public class StorageResponse
     {
         public int UserId { get; set; }
         public int PostId { get; set; }

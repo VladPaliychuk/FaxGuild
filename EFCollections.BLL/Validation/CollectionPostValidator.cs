@@ -1,4 +1,4 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Responses;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EFCollections.BLL.Validation
 {
-    public class CollectionPostValidator : AbstractValidator<CollectionPostDto>
+    public class CollectionPostValidator : AbstractValidator<CollectionPostResponse>
     {
         public CollectionPostValidator()
         {

@@ -1,11 +1,14 @@
-﻿using EFCollections.BLL.DTO;
+﻿using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.DAL.Entities;
 
 namespace EFCollections.BLL.Interfaces
 {
-    public interface IUserService : IService<UserDto>
+    public interface IUserService
     {
-        Task<IEnumerable<UserDto>> GetSortByNameAsync();
-        Task<IEnumerable<UserDto>> GetFilteredUsersAsync(int lessThen);
+        Task DeleteByIdAsync(int id);
+        Task<IEnumerable<UserResponse>> GetAllAsync();
+        Task<UserResponse> GetByIdAsync(int id);
+        Task UpdateAsync(UserRequest request);
     }
 }

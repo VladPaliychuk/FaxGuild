@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.DTO;
+using Azure.Core;
+using EFCollections.BLL.Configurations.Profiles;
+using EFCollections.BLL.DTO.Requests;
+using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.BLL.Profiles;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace EFCollections.BLL.Services
@@ -11,62 +15,25 @@ namespace EFCollections.BLL.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> userManager;
+        private readonly IMapper mapper;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-        }
-        public async Task<IEnumerable<UserDto>> GetFilteredUsersAsync(int lessThen)
-        {
-            var filtered = await _unitOfWork._userRepository.GetFilteredUsersAsync(lessThen);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<UserProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            var filteredSorted = new List<UserDto>();
-            foreach (var item in filtered)
-            {
-                UserDto userDto = mapper.Map<UserDto>(item);
-                filteredSorted.Add(userDto);
-            }
-            return filteredSorted;
-        }
-        public async Task<IEnumerable<UserDto>> GetSortByNameAsync()
-        {
-            var sorted = await _unitOfWork._userRepository.GetSortByNameAsync();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<UserProfile>();
-            });
-            var mapper = config.CreateMapper();
-            var completeSorted = new List<UserDto>();
-            foreach (var item in sorted)
-            {
-                UserDto userDto = mapper.Map<UserDto>(item);
-                completeSorted.Add(userDto);
-            }
-            return completeSorted;
+            userManager = this._unitOfWork._userManager;
+            this.mapper = mapper;
         }
         public async Task DeleteByIdAsync(int id)
         {
-            /*var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<UserDtoProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-            */
-            await _unitOfWork._userRepository.DeleteByIdAsync(id);
+            var user = await userManager.FindByIdAsync(id.ToString());
+            await userManager.DeleteAsync(user);
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        public async Task<IEnumerable<UserResponse>> GetAllAsync()
         {
-            var users = await _unitOfWork._userRepository.GetAllAsync();
+            /*var users = await userManager.GetAllAsync();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -74,19 +41,21 @@ namespace EFCollections.BLL.Services
             });
             var mapper = config.CreateMapper();
 
-            var completeUserDto = new List<UserDto>();
+            var completeUserDto = new List<UserResponse>();
 
             foreach (var item in users)
             {
-                UserDto userDto = mapper.Map<UserDto>(item);
+                UserResponse userDto = mapper.Map<UserResponse>(item);
                 completeUserDto.Add(userDto);
             }
-            return completeUserDto;
+            return completeUserDto;*/
+            var users = await userManager.Users.ToListAsync();
+            return users?.Select(mapper.Map<User, UserResponse>);
         }
 
-        public async Task<UserDto> GetByIdAsync(int id)
+        public async Task<UserResponse> GetByIdAsync(int id)
         {
-            var user = await _unitOfWork._userRepository.GetByIdAsync(id);
+            /*var user = await userManager.GetByIdAsync(id);
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -94,11 +63,13 @@ namespace EFCollections.BLL.Services
             });
             var mapper = config.CreateMapper();
 
-            UserDto userDto = mapper.Map<UserDto>(user);
-            return userDto;
+            UserResponse userDto = mapper.Map<UserResponse>(user);
+            return userDto;*/
+            var user = await userManager.FindByIdAsync(id.ToString());
+            return mapper.Map<User, UserResponse>(user);
         }
 
-        public async Task InsertAsync(UserDto entity)
+        /*public async Task InsertAsync(UserResponse entity)
         {
             if (entity is not null)
             {
@@ -108,16 +79,16 @@ namespace EFCollections.BLL.Services
                 });
 
                 var mapper = config.CreateMapper();
-                User user = mapper.Map<UserDto, User>(entity);
-                await _unitOfWork._userRepository.AddAsync(user);
+                User user = mapper.Map<UserResponse, User>(entity);
+                await userManager.AddAsync(user);
                 await _unitOfWork.SaveChangesAsync();
 
             }
-        }
+        }*/
 
-        public async Task UpdateAsync(UserDto entity)
+        public async Task UpdateAsync(UserRequest request)
         {
-            if (entity is not null)
+            /*if (entity is not null)
             {
                 var config = new MapperConfiguration(cfg =>
                 {
@@ -126,12 +97,19 @@ namespace EFCollections.BLL.Services
 
                 var mapper = config.CreateMapper();
 
-                User user = mapper.Map<UserDto, User>(entity);
+                User user = mapper.Map<UserResponse, User>(entity);
 
-                await _unitOfWork._userRepository.UpdateAsync(user);
+                await _unitOfWork.userManager.UpdateAsync(user);
                 await _unitOfWork.SaveChangesAsync();
 
-            }
+            }*/
+            var user = await userManager.FindByIdAsync(request.Id.ToString());
+
+            user.Name = request.Name;
+            user.Email = request.Email;
+
+            await userManager.UpdateAsync(user);
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
