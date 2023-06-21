@@ -31,5 +31,4 @@
     <ProjectReference Include="..\EF.Collection.DAL\EFCollections.DAL.csproj" />
     <ProjectReference Include="..\EFCollections.BLL\EFCollections.BLL.csproj" />
   </ItemGroup>
-
 </Project>

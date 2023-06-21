@@ -13,11 +13,8 @@ namespace EFCollections.BLL.Services
     public class IdentityService : IIdentityService
     {
         private readonly IUnitOfWork unitOfWork;
-
         private readonly IMapper mapper;
-
         private readonly IJwtSecurityTokenFactory tokenFactory;
-
         private readonly UserManager<User> userManager;
 
         public async Task<JwtResponse> SignInAsync(SignInRequest request)

@@ -1,4 +1,6 @@
-﻿namespace EFCollections.BLL.DTO.Responses
+﻿using Microsoft.AspNetCore.Http;
+
+namespace EFCollections.BLL.DTO.Responses
 {
     public class PostResponse
     {

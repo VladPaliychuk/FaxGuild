@@ -16,8 +16,8 @@ namespace EFCollections.BLL.Validation
             RuleFor(post => post.UserId)
                 .GreaterThan(0).WithMessage("UserId must be greater than 0");
 
-            RuleFor(post => post.Picture)
-                .NotEmpty().WithMessage("Picture is required");
+            /*RuleFor(post => post.Picture)
+                .NotEmpty().WithMessage("Picture is required");*/
         }
     }
 }

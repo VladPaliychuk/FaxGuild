@@ -1,0 +1,87 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>FaxGuild</PageTitle>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<style>
+    *{
+        font-family: 'Inria-Sans', sans-serif;
+        font-weight:400;
+    }
+</style>
+<div class="page" id="g">
+
+    <div class="header" id="g">
+        <p>FAX GUILD</p>
+    </div>
+
+    <div class="nav-panel" >
+        <div style="height:1.5px; background-color:#FF9900;"></div>
+        <div class="tags" id="g">
+            <button> 
+                #food
+            </button>
+
+            <button>
+                #programming
+            </button>
+
+            <button>
+                #data
+            </button>
+
+            <button>
+                #data
+            </button>
+
+            <button>
+                #data
+            </button>
+
+            <button>
+                #data
+            </button>
+
+            <button>
+                #data
+            </button>
+
+            <button>
+                #data
+            </button>
+        </div>
+        <div style="height:1.5px; background-color:#D17F03;"></div>
+
+        <div class="nav" id="g">
+            <button>
+                input
+            </button>
+
+            <button>
+                Collections
+            </button>
+
+            <button>
+                Saved
+            </button>
+
+            <button>
+                Storage
+            </button>
+
+            <button class="sign-button">
+                LogIn/SignUp
+            </button>
+        </div>
+    </div>
+
+    <main>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>

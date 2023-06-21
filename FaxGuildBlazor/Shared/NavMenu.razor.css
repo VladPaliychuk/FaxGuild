@@ -1,0 +1,23 @@
+#g {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.nav-panel{
+    height: 6vw;
+}
+.tags {
+    background-color: #43464D;
+}
+.nav{
+
+}
+.hr-1 {
+    height:1px;
+    color: #FF9900;
+}
+.hr-2 {
+    height: 100px;
+    color: #D17F03;
+}

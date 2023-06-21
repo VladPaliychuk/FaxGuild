@@ -20,6 +20,7 @@ namespace EFCollections.DAL.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Collection> Collections { get; set; }
         public DbSet<CollectionPost> CollectionPosts { get; set; }
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>(); 
         public DbSet<Saved> Saveds { get; set; }
         public DbSet<Storage> Storages { get; set; }
 
@@ -32,6 +33,7 @@ namespace EFCollections.DAL.Data
             modelBuilder.ApplyConfiguration(new CollectionPostConfiguration());
             modelBuilder.ApplyConfiguration(new SavedConfiguration());
             modelBuilder.ApplyConfiguration(new StorageConfiguration());
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
         }
         /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,0 +1,123 @@
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Inria Sans', sans-serif;
+}
+
+#g {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.page {
+        
+}
+
+.header {
+    background-color: #2F3136;
+    color: #FF9900;
+    height: 4.5vw;
+    width: 100%;
+    font-size: 1.7vw;
+}
+.nav-panel {
+    height: auto;
+    width:100%;
+    display: grid;
+}
+
+.tags {
+    background-color: #43464D;
+    height:2.2vw;
+    grid-template-columns: repeat(8, 1fr);
+}
+    .tags button {
+        font-size: 0.9em;
+        background-color: #292930;
+        padding: 0.2vw;
+        border-radius: 100px;
+        align-items: center;
+        border-width: 0;
+        cursor: pointer;
+        height: auto;
+        justify-content: center;
+        line-height: 1.5;
+        text-align: center;
+        padding: 0vw 0.9vw;
+        color: white;
+        font-weight: 300;
+        transition: all 0.2s;
+    }
+        .tags button:hover {
+            color: #292930;
+            background-color: white;
+            font-weight: 300;
+        }
+.nav {
+    height: 4.5vw;
+    background-color: #35393E;
+    grid-template-columns: repeat(5, auto);
+}
+    .nav button {
+        color: white;
+        font-size: 1.2vw;
+        font-weight: 300;
+        cursor: pointer;
+        background-color: #292930;
+        border-radius: 15px;
+        align-items: center;
+        border-width: 0;
+        justify-content: center;
+        padding: 0.6vw 2vw;
+        transition: all 0.2s;
+    }
+        .nav button:hover {
+            color: #292930;
+            background-color: white;
+            font-weight: 300;
+        }
+.sign-button:hover {
+    background-color: #FF9900;
+    color: #FF9900;
+}
+
+/*
+@media (max-width: 640.98px) {
+    .top-row:not(.auth) {
+        display: none;
+    }
+
+    .top-row.auth {
+        justify-content: space-between;
+    }
+
+    .top-row a, .top-row .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row, article {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}*/

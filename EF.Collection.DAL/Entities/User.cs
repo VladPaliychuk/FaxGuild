@@ -12,6 +12,7 @@ namespace EFCollections.DAL.Entities
         [JsonIgnore] public ICollection<Saved>? Saveds { get; set; }
         [JsonIgnore] public ICollection<Collection>? Collections { get; set; }
         [JsonIgnore] public ICollection<Post>? Posts { get; set; }
+        [JsonIgnore] public RefreshToken? RefreshToken { get; set; }
     }
 }
     

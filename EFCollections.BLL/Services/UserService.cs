@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Azure.Core;
-using EFCollections.BLL.Configurations.Profiles;
 using EFCollections.BLL.DTO.Requests;
 using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
@@ -33,38 +32,12 @@ namespace EFCollections.BLL.Services
 
         public async Task<IEnumerable<UserResponse>> GetAllAsync()
         {
-            /*var users = await userManager.GetAllAsync();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<UserProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            var completeUserDto = new List<UserResponse>();
-
-            foreach (var item in users)
-            {
-                UserResponse userDto = mapper.Map<UserResponse>(item);
-                completeUserDto.Add(userDto);
-            }
-            return completeUserDto;*/
             var users = await userManager.Users.ToListAsync();
             return users?.Select(mapper.Map<User, UserResponse>);
         }
 
         public async Task<UserResponse> GetByIdAsync(int id)
         {
-            /*var user = await userManager.GetByIdAsync(id);
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<UserProfile>();
-            });
-            var mapper = config.CreateMapper();
-
-            UserResponse userDto = mapper.Map<UserResponse>(user);
-            return userDto;*/
             var user = await userManager.FindByIdAsync(id.ToString());
             return mapper.Map<User, UserResponse>(user);
         }
@@ -88,21 +61,6 @@ namespace EFCollections.BLL.Services
 
         public async Task UpdateAsync(UserRequest request)
         {
-            /*if (entity is not null)
-            {
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<UserDtoProfile>();
-                });
-
-                var mapper = config.CreateMapper();
-
-                User user = mapper.Map<UserResponse, User>(entity);
-
-                await _unitOfWork.userManager.UpdateAsync(user);
-                await _unitOfWork.SaveChangesAsync();
-
-            }*/
             var user = await userManager.FindByIdAsync(request.Id.ToString());
 
             user.Name = request.Name;

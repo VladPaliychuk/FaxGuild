@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.Configurations.Profiles;
 using EFCollections.BLL.DTO.Requests;
 using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
@@ -19,7 +18,12 @@ namespace EFCollections.BLL.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
+        public async Task UpdateLikesAsync(int id)
+        {
+            var post = await _postRepository.GetByIdAsync(id);
+            post.Likes += 1;
+            await _unitOfWork.SaveChangesAsync();
+        }
         public async Task DeleteByIdAsync(int id)
         {
             await _unitOfWork._postRepository.DeleteByIdAsync(id);

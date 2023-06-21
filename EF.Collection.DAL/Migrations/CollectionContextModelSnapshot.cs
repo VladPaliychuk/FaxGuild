@@ -83,6 +83,32 @@ namespace EFCollections.DAL.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("EFCollections.DAL.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("UserSecret")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("EFCollections.DAL.Entities.Saved", b =>
                 {
                     b.Property<int>("PostId")
@@ -223,6 +249,7 @@ namespace EFCollections.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -378,6 +405,16 @@ namespace EFCollections.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EFCollections.DAL.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("EFCollections.DAL.Entities.User", "User")
+                        .WithOne("RefreshToken")
+                        .HasForeignKey("EFCollections.DAL.Entities.RefreshToken", "UserName")
+                        .HasPrincipalKey("EFCollections.DAL.Entities.User", "UserName");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EFCollections.DAL.Entities.Saved", b =>
                 {
                     b.HasOne("EFCollections.DAL.Entities.Post", "Post")
@@ -486,6 +523,8 @@ namespace EFCollections.DAL.Migrations
                     b.Navigation("Collections");
 
                     b.Navigation("Posts");
+
+                    b.Navigation("RefreshToken");
 
                     b.Navigation("Saveds");
 

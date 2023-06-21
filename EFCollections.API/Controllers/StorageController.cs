@@ -15,16 +15,13 @@ namespace EFCollections.API.Controllers
     {
         private readonly ILogger<StorageController> _logger;
         private readonly IStorageService _storageService;
-        private readonly IStorageRepository _storageRepository;
         public StorageController(
             ILogger<StorageController> logger,
-            IStorageRepository storageRepository,
             IStorageService StorageService
             )
         {
             _logger = logger;
             _storageService = StorageService;
-            _storageRepository = storageRepository;
         }
 
         [HttpGet("Get BLL")]

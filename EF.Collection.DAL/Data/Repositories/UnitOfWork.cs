@@ -15,11 +15,13 @@ namespace EFCollections.DAL.Data.Repositories
         public ISavedRepository _savedRepository { get; }
         public IPostRepository _postRepository { get; }
         public ICollectionPostRepository _collectionPostRepository { get; }
+        public ITokenRepository _tokenRepository { get; }
         public UnitOfWork(
              CollectionContext databaseContext,
              ICollectionRepository collectionRepository,
              UserManager<User> userManager,
              SignInManager<User> signInManager,
+             ITokenRepository tokenRepository,
              IStorageRepository storageRepository,
              ISavedRepository savedRepository,
              IPostRepository postRepository,
@@ -33,6 +35,7 @@ namespace EFCollections.DAL.Data.Repositories
             this._storageRepository = storageRepository;
             this._savedRepository = savedRepository;
             this._postRepository = postRepository;
+            this._tokenRepository = tokenRepository;
             this._collectionPostRepository = collectionPostRepository;
         }
         public async Task SaveChangesAsync()

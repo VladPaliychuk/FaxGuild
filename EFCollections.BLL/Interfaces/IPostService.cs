@@ -10,5 +10,6 @@ namespace EFCollections.BLL.Interfaces
         Task InsertAsync(PostRequest request);
 
         Task UpdateAsync(PostRequest request);
+        Task UpdateLikesAsync(int id);
     }
 }

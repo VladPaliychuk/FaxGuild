@@ -14,16 +14,13 @@ namespace EFCollections.API.Controllers
     {
         private readonly ILogger<SavedController> _logger;
         private readonly ISavedService _savedService;
-        private readonly ISavedRepository _savedRepository;
         public SavedController(
             ILogger<SavedController> logger,
-            ISavedRepository savedRepository,
             ISavedService SavedService
             )
         {
             _logger = logger;
             _savedService = SavedService;
-            _savedRepository = savedRepository;
         }
 
         [HttpGet("Get BLL")]

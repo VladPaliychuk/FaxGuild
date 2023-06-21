@@ -14,16 +14,13 @@ namespace EFCollections.API.Controllers
     {
         private readonly ILogger<CollectionPostController> _logger;
         private readonly ICollectionPostService _collectionPostService;
-        private readonly ICollectionPostRepository _collectionPostRepository;
         public CollectionPostController(
             ILogger<CollectionPostController> logger,
-            ICollectionPostService collectionPostService,
-            ICollectionPostRepository collectionPostRepository
+            ICollectionPostService collectionPostService
             )
         {
             _logger = logger;
             _collectionPostService = collectionPostService;
-            _collectionPostRepository = collectionPostRepository;
         }
         [HttpGet("Get BLL")]
         public async Task<ActionResult<IEnumerable<CollectionPostResponse>>> GeAllBLLAsync()

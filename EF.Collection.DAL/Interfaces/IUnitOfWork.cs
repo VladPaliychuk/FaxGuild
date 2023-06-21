@@ -11,7 +11,7 @@ namespace EFCollections.DAL.Interfaces.Repositories
         IPostRepository _postRepository { get; }
         ISavedRepository _savedRepository { get; }
         IStorageRepository _storageRepository { get; }
-        //IUserRepository _userRepository { get; }
+        ITokenRepository _tokenRepository { get; }
         UserManager<User> _userManager { get; }
         SignInManager<User> _signInManager { get; }
         //void Commit();

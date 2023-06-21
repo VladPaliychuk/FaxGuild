@@ -1,0 +1,72 @@
+﻿@page "/"
+@using EFCollections.BLL.DTO.Responses;
+@using FaxGuildBlazor.Services;
+@inject PostService postService
+
+<PageTitle>FaxGuild</PageTitle>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400&display=swap" rel="stylesheet">
+</head>
+
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Inria-Sans', sans-serif;
+        font-weight: 400;
+    }
+    .main{
+        width:100%;
+        height:100%;
+        background-color: #35393E;
+    }
+</style>
+
+@*<div class="main">
+    @if(posts == null)
+    {
+        <p>Error 404</p>
+    }
+    else{
+        @foreach(var post in posts)
+        {
+            <div class="post">
+                <div>
+                    img
+                </div>
+
+                <div>
+                    <div>
+                        Likes
+                    </div>
+
+                    <div>
+                        Save
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>*@
+
+@code{
+    private IEnumerable<PostResponse> postResponses;
+    private List<PostResponse> posts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPosts();
+    }
+
+    private async Task GetPosts()
+    {
+        postResponses = await postService.GetAllAsync();
+
+        foreach(var post in postResponses)
+        {
+            posts.Add(post);
+        }
+    }
+}

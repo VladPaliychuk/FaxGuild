@@ -1,0 +1,33 @@
+﻿<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        font-family: 'Inria-Sans', sans-serif;
+        font-weight: 400;
+        /*padding: 0;
+        margin: 0;*/
+    }
+</style>
+
+<div class=" nav-panel" id="g">
+    <hr class="hr-1">
+    <div class="tags" id="g">
+    </div>
+    <hr class="hr-2>" size=5>
+
+    <div class="nav" id="g">
+    </div>
+</div>
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

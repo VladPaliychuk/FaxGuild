@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.Configurations.Profiles;
 using EFCollections.BLL.DTO.Requests;
 using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
 using EFCollections.DAL.Entities;
 using EFCollections.DAL.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EFCollections.BLL.Services
 {

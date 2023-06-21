@@ -1,11 +1,7 @@
-﻿using Azure.Core;
-using EFCollections.BLL.DTO.Requests;
+﻿using EFCollections.BLL.DTO.Requests;
 using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.BLL.Services;
-using EFCollections.BLL.Validation;
 using EFCollections.DAL.Interfaces.Repositories;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EFCollections.API.Controllers

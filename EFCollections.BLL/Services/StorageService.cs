@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using EFCollections.BLL.Configurations.Profiles;
 using EFCollections.BLL.DTO.Requests;
 using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
