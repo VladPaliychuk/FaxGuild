@@ -5,8 +5,7 @@ namespace EFCollections.DAL.Entities
 {
     public class User : IdentityUser<int>
     {
-        public string Name { get; set; } = null!;
-        public string Role { get; set; } = null!;
+        //public string Name { get; set; } = null!;
 
         [JsonIgnore] public ICollection<Storage>? Storages { get; set; }
         [JsonIgnore] public ICollection<Saved>? Saveds { get; set; }

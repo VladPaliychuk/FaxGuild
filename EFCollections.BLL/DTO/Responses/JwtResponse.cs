@@ -3,8 +3,9 @@
     public class JwtResponse
     {
         public string UserName { get; set; } = null!;
-        public string Token { get; set;} = null!;
-        public string RefreshToken { get; set; } = null!;
-        public string UserId { get; internal set; }
+        public int Id { get; set; }
+
+        public string? Token { get; set;}
+        //public string RefreshToken { get; set; } = null!;
     }
 }

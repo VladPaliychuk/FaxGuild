@@ -6,9 +6,7 @@ namespace EFCollections.BLL.Interfaces
 {
     public interface IUserService
     {
-        Task DeleteByIdAsync(int id);
-        Task<IEnumerable<UserResponse>> GetAllAsync();
-        Task<UserResponse> GetByIdAsync(int id);
-        Task UpdateAsync(UserRequest request);
+        Task RewokeRefreshToken(string userName, string token);
+        Task<UserResponse> GetClientByName(string name);
     }
 }

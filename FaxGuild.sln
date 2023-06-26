@@ -27,17 +27,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{3469D00C-B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{BB19C43F-D98F-49E6-A254-048FBE260267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.WebAPI", "CleanArchitectureSolution.WebAPI\CleanArchitecture.WebAPI.csproj", "{1202AE08-0B64-419C-846A-67AF737F6F14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.WebAPI", "CleanArchitectureSolution.WebAPI\CleanArchitecture.WebAPI.csproj", "{1202AE08-0B64-419C-846A-67AF737F6F14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Domain", "CleanArchitecture.Domain\CleanArchitecture.Domain.csproj", "{EAD9264A-031C-4489-938D-77FA7ECC32D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Domain", "CleanArchitecture.Domain\CleanArchitecture.Domain.csproj", "{EAD9264A-031C-4489-938D-77FA7ECC32D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Application", "CleanArchitecture.Application\CleanArchitecture.Application.csproj", "{249B45CA-04EF-45E1-A3E2-3D809C9555FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Application", "CleanArchitecture.Application\CleanArchitecture.Application.csproj", "{249B45CA-04EF-45E1-A3E2-3D809C9555FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Infrastructure", "CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{E33FFBCA-CD84-4405-8B67-F25ACDDD9D0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastructure", "CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{E33FFBCA-CD84-4405-8B67-F25ACDDD9D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Persistence", "CleanArchitecture.Persistence\CleanArchitecture.Persistence.csproj", "{7E027595-1AA1-4A13-A687-4F44082B7F32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Persistence", "CleanArchitecture.Persistence\CleanArchitecture.Persistence.csproj", "{7E027595-1AA1-4A13-A687-4F44082B7F32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Shared", "CleanArchitecture.Shared\CleanArchitecture.Shared.csproj", "{D9AAF2BA-A4A3-45DC-9590-9887790BEDC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Shared", "CleanArchitecture.Shared\CleanArchitecture.Shared.csproj", "{D9AAF2BA-A4A3-45DC-9590-9887790BEDC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF FaxGuild", "WPF FaxGuild\WPF FaxGuild.csproj", "{722D8B98-56C2-45F5-801F-CBE614106841}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,10 @@ Global
 		{D9AAF2BA-A4A3-45DC-9590-9887790BEDC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9AAF2BA-A4A3-45DC-9590-9887790BEDC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9AAF2BA-A4A3-45DC-9590-9887790BEDC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{722D8B98-56C2-45F5-801F-CBE614106841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{722D8B98-56C2-45F5-801F-CBE614106841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{722D8B98-56C2-45F5-801F-CBE614106841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{722D8B98-56C2-45F5-801F-CBE614106841}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

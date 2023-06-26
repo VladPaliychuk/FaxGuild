@@ -9,18 +9,23 @@ namespace EFCollections.BLL.Configurations
     {
         public AutoMapperProfile()
         {
-            CreateUserMaps();
+            //CreateUserMaps();
+            CreateIdentityMap();
             CreateCollectionMaps();
             CreatePostMaps();
             CreateStorageMaps();
             CreateSavedMaps();
             CreateCollectionPostMaps();
         }
-        private void CreateUserMaps()
+        /*private void CreateUserMaps()
         {
             CreateMap<SignInRequest, User>();
             CreateMap<UserRequest, User>();
             CreateMap<User, UserResponse>();
+        }   */
+        private void CreateIdentityMap()
+        {
+            CreateMap<User, SignUpRequest>().ReverseMap();
         }
         private void CreateCollectionMaps()
         {

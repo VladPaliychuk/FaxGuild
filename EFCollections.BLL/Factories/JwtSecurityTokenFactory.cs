@@ -1,4 +1,5 @@
-﻿using EFCollections.BLL.Configurations;
+﻿using Azure.Identity;
+using EFCollections.BLL.Configurations;
 using EFCollections.BLL.Interfaces;
 using EFCollections.DAL.Entities;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,7 +20,7 @@ namespace EFCollections.BLL.Factories
 
         private static List<Claim> GetClaims(User user) => new()
         {
-            new(JwtRegisteredClaimNames.UniqueName, user.Name),
+            new(JwtRegisteredClaimNames.UniqueName, user.UserName),
             new(ClaimTypes.Authentication, user.Id.ToString()),
         };
 

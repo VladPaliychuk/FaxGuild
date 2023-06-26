@@ -6,7 +6,7 @@ namespace EFCollections.DAL.Entities
     {
         public int Id { get; set; }
         public string? UserName { get; set; }
-        public string? UserSecret { get; set; }
+        public string UserSecret { get; set; } = null!;
         public DateTime? ExpirationDate { get; set; }
         [JsonIgnore] public User? User { get; set; }
     }

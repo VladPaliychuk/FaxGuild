@@ -12,11 +12,6 @@ namespace EFCollections.BLL.Validation
     {
         public UserValidator()
         {
-            /*RuleFor(u => u.Id)
-                .GreaterThan(0).WithMessage("Id must be greater than 0");*/
-            RuleFor(user => user.Name)
-                .NotEmpty().WithMessage("Name is required")
-                .MaximumLength(15).WithMessage("Name cannot exceed 15 characters");
         }
     }
 }

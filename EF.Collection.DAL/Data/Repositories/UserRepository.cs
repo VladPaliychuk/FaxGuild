@@ -28,7 +28,7 @@ namespace EFCollections.DAL.Data.Repositories
         public async Task<IEnumerable<User>> GetSortByNameAsync()
         {
             //var users = await table.OrderBy(x => x.Name).ToListAsync();
-            return await table.OrderBy(x => x.Name).ToListAsync()
+            return await table.OrderBy(x => x.UserName).ToListAsync()
             ?? throw new EntityNotFoundException($"{typeof(User)} is null.");
         }
     }

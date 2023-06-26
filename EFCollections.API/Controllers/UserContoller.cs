@@ -12,17 +12,32 @@ namespace EFCollections.API.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
         public UserController(
             ILogger<UserController> logger,
             IUserRepository userRepository,
-            IUserService userService
+            IUserService userService,
+            ITokenService tokenService
             )
         {
             _logger = logger;
             _userService = userService;
+            _tokenService = tokenService;
         }
 
-        [HttpGet("Get BLL")]
+        [HttpPost("GetAccessTokenByRefreshToken")]
+        public async Task<IActionResult> RenewAccessToken([FromBody] string requesttoken)
+        {
+            try
+            {
+                var newToken = _tokenService.GetAccessTokenByRefreshToken(requesttoken);
+
+                return Ok(newToken);
+            }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
+        }
+
+        /*[HttpGet("Get BLL")]
         public async Task<ActionResult<IEnumerable<UserResponse>>> GeAllBLLAsync()
         {
             try
@@ -60,7 +75,7 @@ namespace EFCollections.API.Controllers
             }
         }
 
-        /*[HttpPost("InserBLL")]
+        [HttpPost("InserBLL")]
         public async Task<ActionResult> Insert([FromBody] UserResponse user)
         {
             try
@@ -93,7 +108,7 @@ namespace EFCollections.API.Controllers
                 _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі InsertAsync - {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
             }
-        }*/
+        }
 
         [HttpGet("BLL{id}")]
         public async Task<ActionResult<UserResponse>> GetByIdBLLAsync(int id)
@@ -144,6 +159,6 @@ namespace EFCollections.API.Controllers
                 _logger.LogError($"Транзакція сфейлилась! Щось пішло не так у методі InsertAsync - {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "вот так вот!");
             }
-        }
+        }*/
     }
 }

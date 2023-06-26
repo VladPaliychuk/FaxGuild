@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EFCollections.BLL.DTO.Requests;
 using EFCollections.BLL.Validation;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,11 +25,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<CollectionContext>(options =>
 {
-    string connectionString = builder.Configuration.GetConnectionString("MSSQLConnection");
+    string? connectionString = builder.Configuration.GetConnectionString("MSSQLConnection");
     options.UseSqlServer(connectionString);
 });
 
@@ -36,7 +36,7 @@ builder.Services.AddDbContext<CollectionContext>(options =>
 builder.Services.AddTransient<JwtTokenConfiguration>();
 builder.Services.AddTransient<IJwtSecurityTokenFactory, JwtSecurityTokenFactory>();
 
-//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
@@ -47,22 +47,25 @@ builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<ICollectionService, CollectionService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IStorageService, StorageService>();
 builder.Services.AddScoped<ISavedService, SavedService>();
 builder.Services.AddScoped<ICollectionPostService, CollectionPostService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 
 builder.Services.AddScoped<IValidator<SignInRequest>, SignInRequestValidator>();
+builder.Services.AddScoped<IValidator<SignUpRequest>, SignUpRequestValidator>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddTransient<IValidatorFactory, ServiceProviderValidatorFactory>();
 
-/*builder.Services.AddMvc(options =>
+builder.Services.AddMvc(options =>
 {
     options.EnableEndpointRouting = false;
 })
@@ -70,8 +73,9 @@ builder.Services.AddTransient<IValidatorFactory, ServiceProviderValidatorFactory
                     {
                         configuration.RegisterValidatorsFromAssemblies(
                             AppDomain.CurrentDomain.GetAssemblies());
-                    });*/
+                    });
 builder.Services.AddEndpointsApiExplorer();
+
 var securityScheme = new OpenApiSecurityScheme()
 {
     Name = "Authorization",
@@ -136,7 +140,7 @@ builder.Services.AddSwaggerGen(c =>
                     }
                 });
 });
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Domain.Common;
+using System.Text.Json.Serialization;
 
 namespace CleanArchitecture.Domain.Entities
 {
@@ -8,6 +9,7 @@ namespace CleanArchitecture.Domain.Entities
         public int Likes { get; set; }
         public int PostId { get; set; }
 
+        [JsonIgnore]
         public ICollection<Reply>? Replies { get; set; }
     }
 }

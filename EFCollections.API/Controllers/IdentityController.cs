@@ -1,10 +1,8 @@
 ﻿using EFCollections.BLL.DTO.Requests;
 using EFCollections.BLL.DTO.Responses;
 using EFCollections.BLL.Interfaces;
-using EFCollections.DAL.Interfaces.Repositories;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Principal;
 
 namespace EFCollections.API.Controllers
 {

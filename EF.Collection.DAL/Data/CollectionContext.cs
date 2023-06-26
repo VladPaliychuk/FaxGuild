@@ -10,28 +10,21 @@ namespace EFCollections.DAL.Data
     {
         public CollectionContext(DbContextOptions options) : base(options) { }
 
-        //public DbSet<User> Users => Set<User>();
-        //public DbSet<Post> Posts => Set<Post>();
-        //public DbSet<Collection> Collections => Set<Collection>();
-        //public DbSet<CollectionPost> CollectionPosts => Set<CollectionPost>();
-        //public DbSet<Saved> Saveds => Set<Saved>();
-        //public DbSet<Storage> Storages => Set<Storage>();
-        //public DbSet<User> Users { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Collection> Collections { get; set; }
-        public DbSet<CollectionPost> CollectionPosts { get; set; }
-        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>(); 
-        public DbSet<Saved> Saveds { get; set; }
-        public DbSet<Storage> Storages { get; set; }
-
+        public DbSet<Post> Posts => Set<Post>();
+        public DbSet<Collection> Collections => Set<Collection>();
+        public DbSet<CollectionPost> CollectionPosts => Set<CollectionPost>();
+        public DbSet<Saved> Saveds => Set<Saved>();
+        public DbSet<Storage> Storages => Set<Storage>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<User> User { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new PostConfiguration());
             modelBuilder.ApplyConfiguration(new CollectionConfiguration());
             modelBuilder.ApplyConfiguration(new CollectionPostConfiguration());
-            modelBuilder.ApplyConfiguration(new SavedConfiguration());
+            modelBuilder.ApplyConfiguration(new SavedConfiguration());  
             modelBuilder.ApplyConfiguration(new StorageConfiguration());
             modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
         }

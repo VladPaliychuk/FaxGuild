@@ -16,15 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Exeptions\" />
-    <Folder Include="Common\Mapping\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Features\Comments\UpdateComment\" />
-    <Folder Include="Features\Comments\DeleteComment\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
   </ItemGroup>
 

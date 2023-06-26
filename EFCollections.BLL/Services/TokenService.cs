@@ -56,7 +56,7 @@ namespace EFCollections.BLL.Services
                 var jwtSecutity = BuildToken(client.Result);
                 return SerializeToken(jwtSecutity);
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
         }
         public void DeleteRefreshToken(string clientName)
         {
@@ -65,7 +65,7 @@ namespace EFCollections.BLL.Services
                 unitOfWork._tokenRepository.DeleteTokenByUserName(clientName);
                 unitOfWork.SaveChangesAsync();
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
 
         }
         public string GetRefreshToken(string username)
@@ -94,7 +94,7 @@ namespace EFCollections.BLL.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(ex.ToString());
             }
         }
         public bool IsValid(JwtResponse response, out string username)
@@ -113,10 +113,10 @@ namespace EFCollections.BLL.Services
                 throw new UnauthorizedAccessException("No user name");
             }
 
-            if (!Guid.TryParse(response.RefreshToken, out Guid givenRefreshToken))
+            /*if (!Guid.TryParse(response.RefreshToken, out Guid givenRefreshToken))
             {
                 throw new UnauthorizedAccessException("Refresh token malformed");
-            }
+            }*/
             var curenttoken = unitOfWork._tokenRepository.GeTokenByUserName(response.UserName);
             Guid curentRefreshToken = Guid.Parse(curenttoken.Result.UserSecret);
 
@@ -126,21 +126,20 @@ namespace EFCollections.BLL.Services
                 throw new UnauthorizedAccessException("Refresh Token is expired,it will be deleted");
 
             }
-
+/*
             if (curentRefreshToken == null)
             {
                 throw new UnauthorizedAccessException("No valid refresh token in system");
 
-            }
-            if (curentRefreshToken != givenRefreshToken)
+            }*/
+            /*if (curentRefreshToken != givenRefreshToken)
             {
                 throw new UnauthorizedAccessException("invalid refresh token");
-            }
+            }*/
 
             return true;
 
         }
-
 
         private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {

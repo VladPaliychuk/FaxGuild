@@ -11,7 +11,7 @@ namespace EFCollections.DAL.Configuration
         {
             //builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.Name);
+            //builder.Property(u => u.UserName);
 
             //builder.HasData(DataSeeder.Users);
             //new UserSeeder().Seed(builder);

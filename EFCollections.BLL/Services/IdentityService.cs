@@ -6,6 +6,7 @@ using EFCollections.DAL.Entities;
 using EFCollections.DAL.Exceptions;
 using EFCollections.DAL.Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace EFCollections.BLL.Services
@@ -14,22 +15,22 @@ namespace EFCollections.BLL.Services
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
-        private readonly IJwtSecurityTokenFactory tokenFactory;
         private readonly UserManager<User> userManager;
+        private readonly ITokenService tokenService;
 
         public async Task<JwtResponse> SignInAsync(SignInRequest request)
         {
-            var user = await userManager.FindByNameAsync(request.Name)
+            var user = await userManager.FindByNameAsync(request.UserName)
                 ?? throw new EntityNotFoundException(
-                    $"{nameof(User)} with user name {request.Name} not found.");
+                    $"{nameof(User)} with user name {request.UserName} not found.");
 
             if (!await userManager.CheckPasswordAsync(user, request.Password))
             {
                 throw new EntityNotFoundException("Incorrect username or password.");
             }
 
-            var jwtToken = tokenFactory.BuildToken(user);
-            return new() { Token = SerializeToken(jwtToken), UserId = user.Id.ToString() };
+            var jwtToken = tokenService.BuildToken(user);
+            return new() { Id = user.Id, Token = tokenService.SerializeToken(jwtToken), UserName = user.UserName/*, RefreshToken = tokenService.GetRefreshToken(user.UserName)*/ };
         }
 
         public async Task<JwtResponse> SignUpAsync(SignUpRequest request)
@@ -46,9 +47,14 @@ namespace EFCollections.BLL.Services
             }
 
             await unitOfWork.SaveChangesAsync();
+            var newUser = await userManager.FindByNameAsync(request.UserName);
 
-            var jwtToken = tokenFactory.BuildToken(user);
-            return new() { Token = SerializeToken(jwtToken) };
+            try
+            {
+                var jwtToken = tokenService.BuildToken(user);
+                return new() { UserName = newUser.UserName, Token = tokenService.SerializeToken(jwtToken) /*RefreshToken = tokenService.GetRefreshToken(user.UserName)*/ };
+            }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
         }
 
         private static string SerializeToken(JwtSecurityToken jwtToken) =>
@@ -57,12 +63,12 @@ namespace EFCollections.BLL.Services
         public IdentityService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IJwtSecurityTokenFactory tokenFactory)
+            ITokenService tokenService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
-            this.tokenFactory = tokenFactory;
             userManager = this.unitOfWork._userManager;
+            this.tokenService = tokenService;
         }
     }
 }

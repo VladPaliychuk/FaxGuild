@@ -23,7 +23,32 @@ namespace EFCollections.BLL.Services
             userManager = this._unitOfWork._userManager;
             this.mapper = mapper;
         }
-        public async Task DeleteByIdAsync(int id)
+        public async Task RewokeRefreshToken(string userName, string token)
+        {
+            try
+            {
+
+                var tok = _unitOfWork._tokenRepository.GeTokenByUserName(userName);
+                if (tok.Result.UserSecret == token)
+                    tok.Result.ExpirationDate = DateTime.Now.AddDays(1);
+                else
+                    throw new UnauthorizedAccessException("No valid refresh token");
+            }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
+
+
+        }
+
+        public async Task<UserResponse> GetClientByName(string name)
+        {
+            try
+            {
+                return mapper.Map<User, UserResponse>(await _unitOfWork._userManager.FindByNameAsync(name));
+            }
+            catch (Exception ex) { throw new Exception(ex.ToString()); }
+
+        }
+        /*public async Task DeleteByIdAsync(int id)
         {
             var user = await userManager.FindByIdAsync(id.ToString());
             await userManager.DeleteAsync(user);
@@ -34,13 +59,13 @@ namespace EFCollections.BLL.Services
         {
             var users = await userManager.Users.ToListAsync();
             return users?.Select(mapper.Map<User, UserResponse>);
-        }
+        }*/
 
-        public async Task<UserResponse> GetByIdAsync(int id)
+        /*public async Task<UserResponse> GetByIdAsync(int id)
         {
             var user = await userManager.FindByIdAsync(id.ToString());
             return mapper.Map<User, UserResponse>(user);
-        }
+        }*/
 
         /*public async Task InsertAsync(UserResponse entity)
         {
@@ -59,7 +84,7 @@ namespace EFCollections.BLL.Services
             }
         }*/
 
-        public async Task UpdateAsync(UserRequest request)
+        /*public async Task UpdateAsync(UserRequest request)
         {
             var user = await userManager.FindByIdAsync(request.Id.ToString());
 
@@ -68,6 +93,6 @@ namespace EFCollections.BLL.Services
 
             await userManager.UpdateAsync(user);
             await _unitOfWork.SaveChangesAsync();
-        }
+        }*/
     }
 }
